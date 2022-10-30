@@ -7,9 +7,9 @@ package Model;
 
 
 public interface Kota {
-    int BANDUNG = 1;
-    int JAKARTA = 2;
-    int DEPOK = 3;
-    int TANGGERANG = 4;
-    int BEKASI = 5;
+    final int BANDUNG = 1;
+    final int JAKARTA = 2;
+    final int DEPOK = 3;
+    final int TANGGERANG = 4;
+    final int BEKASI = 5;
 }

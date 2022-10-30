@@ -6,6 +6,26 @@
 package Model;
 
 
-public class Admin {
+public class Admin extends User{
+    private String adminName;
+
+    public Admin() {
+    }
+
+    public Admin(String adminName, int idUser, String email, String password, Model.UserType UserType) {
+        super(idUser, email, password, UserType);
+        this.adminName = adminName;
+    }
+
+    public String getAdminName() {
+        return adminName;
+    }
+
+    public void setAdminName(String adminName) {
+        this.adminName = adminName;
+    }
+
+    
+    
     
 }
