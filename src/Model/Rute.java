@@ -10,7 +10,47 @@ public class Rute implements Kota{
     private int idRute;
     private int tujuan;
     private int keberangkatan;
-    private Kota kota;
+    private int kota;
     //ini deklarasi juga kah?
+
+    public Rute(int idRute, int tujuan, int keberangkatan, int kota) {
+        this.idRute = idRute;
+        this.tujuan = tujuan;
+        this.keberangkatan = keberangkatan;
+        this.kota = kota;
+    }
+
+    public int getIdRute() {
+        return idRute;
+    }
+
+    public void setIdRute(int idRute) {
+        this.idRute = idRute;
+    }
+
+    public int getTujuan() {
+        return tujuan;
+    }
+
+    public void setTujuan(int tujuan) {
+        this.tujuan = tujuan;
+    }
+
+    public int getKeberangkatan() {
+        return keberangkatan;
+    }
+
+    public void setKeberangkatan(int keberangkatan) {
+        this.keberangkatan = keberangkatan;
+    }
+
+    public int getKota() {
+        return kota;
+    }
+
+    public void setKota(int kota) {
+        this.kota = kota;
+    }
+    
     
 }
