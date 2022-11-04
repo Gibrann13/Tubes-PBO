@@ -20,7 +20,7 @@ import javax.swing.JTextField;
  *
  * @author Gibran<>
  */
-public class View {
+public class Menu_home {
 
     public View() {
 
