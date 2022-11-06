@@ -5,165 +5,213 @@
  */
 package View;
 
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 /**
  *
  * @author Gibran<>
  */
-public class Menu_home {
+public class Menu_home implements ActionListener {
 
-    public View() {
+    JFrame frameHome;
+    JPanel panelAwal, panelLogin, panelRegister;
+    JTextField email, firstname, lastname, phonenumber;
+    JPasswordField password;
+    JLabel title, title2, labelNanya;
+    JButton buttonLogin, buttonRegister, buttonSubmitLogin, buttonSubmitRegister;
 
-        JFrame frameAwal = new JFrame("Form Data");
-        frameAwal.setSize(600, 600);
-        frameAwal.setLocationRelativeTo(null);
+    public Menu_home() {
 
-        JLabel labelSelamatDatang = new JLabel();
-        labelSelamatDatang.setText("Selamat datang,di");
-        labelSelamatDatang.setBounds(200, 180, 400, 50);
-        labelSelamatDatang.setOpaque(true);
-        labelSelamatDatang.setFont(new Font("Helvetica Neue", Font.BOLD, 23));
+        frameHome = new JFrame("Travel Gajelas");
+        frameHome.pack();
+        frameHome.setSize(1000, 700);
+        frameHome.setLocationRelativeTo(null);
+        frameHome.getContentPane().setBackground(new Color(51,153, 255));
+        frameHome.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JLabel labelSelamatDatang2 = new JLabel();
-        labelSelamatDatang2.setText("Travel Apanih");
-        labelSelamatDatang2.setBounds(220, 220, 400, 50);
-        labelSelamatDatang2.setOpaque(true);
-        labelSelamatDatang2.setFont(new Font("Helvetica Neue", Font.BOLD, 23));
+        panelAwal = new JPanel();
+        panelAwal.setLayout(null);
+        panelAwal.setBackground(new Color(150,153, 255));
+        panelAwal.setBounds(500, 20, 500, 600);
 
-        JButton buttonLogIn;
-        buttonLogIn = new JButton("Log In");
-        buttonLogIn.setBounds(220, 270, 150, 20);
-        buttonLogIn.setEnabled(true);
+        title = new JLabel("SELAMAT DATANG DI");
+        title.setBounds(50, 180, 400, 50);
+        title.setFont(new Font("Helvetica Neue", Font.BOLD, 30));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JButton buttonRegister;
-        buttonRegister = new JButton("Register");
-        buttonRegister.setBounds(220, 305, 150, 20);
-        buttonRegister.setEnabled(true);
+        title2 = new JLabel("TRAVEL GAJELAS");
+        title2.setBounds(50, 210, 400, 50);
+        title2.setFont(new Font("Helvetica Neue", Font.BOLD, 30));
+        title2.setHorizontalAlignment(SwingConstants.CENTER);
 
-//        frameAwal.setLayout( new GridBagLayout() );
-//        frameAwal.add(buttonLogIn, new GridBagConstraints());
-//        frameAwal.add(buttonRegister, new GridBagConstraints());
-//        frameAwal.add(labelSelamatDatang, new GridBagConstraints());
-        frameAwal.add(buttonLogIn);
-        frameAwal.add(buttonRegister);
-        frameAwal.add(labelSelamatDatang);
-        frameAwal.add(labelSelamatDatang2);
-
-        frameAwal.setLayout(null);
-        frameAwal.setVisible(true);
+        labelNanya = new JLabel("Not a member? Sign up now!");
+        labelNanya.setBounds(125, 260, 250, 30);
+        labelNanya.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
+        labelNanya.setHorizontalAlignment(SwingConstants.CENTER);
         
-        //Frame Register
-        JFrame frameRegister = new JFrame("Form Register");
-        frameRegister.setSize(600, 600);
-        frameRegister.setLocationRelativeTo(null);
+        buttonLogin = new JButton("LOGIN");
+        buttonLogin.setBounds(175, 290, 150, 50);
+        buttonLogin.addActionListener(this);
+        buttonLogin.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
+        buttonLogin.setVisible(false);
+        
+        buttonRegister = new JButton("REGISTER");
+        buttonRegister.setBounds(175, 290, 150, 50);
+        buttonRegister.addActionListener(this);
+        buttonRegister.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
 
-        JButton buttonKembaliReg;
-        buttonKembaliReg = new JButton("Kembali register");
-        buttonKembaliReg.setBounds(220, 305, 150, 20);
-        buttonKembaliReg.setEnabled(true);
-        
-        frameRegister.add(buttonKembaliReg);
-        
-        frameRegister.setLayout(null);
-//        frameRegister.setVisible(true);
-        
-        
-        //Frame Login
-        JFrame frameLogIn = new JFrame("Form Log In");
-        frameLogIn.setSize(600, 600);
-        frameLogIn.setLocationRelativeTo(null);
 
-        JButton buttonKembaliLogin;
-        buttonKembaliLogin = new JButton("Kembali login");
-        buttonKembaliLogin.setBounds(220, 335, 150, 20);
-        buttonKembaliLogin.setEnabled(true);
-        
-        JButton buttonSubmitLogin;
-        buttonSubmitLogin = new JButton("Submit");
-        buttonSubmitLogin.setBounds(220, 305, 150, 20);
-        buttonSubmitLogin.setEnabled(true);
+        panelAwal.add(buttonLogin);
+        panelAwal.add(buttonRegister);
+        panelAwal.add(labelNanya);
+        panelAwal.add(title);
+        panelAwal.add(title2);
 
-        JTextField nickname;
+        login();
+        frameHome.add(panelAwal);
+        frameHome.setLayout(null);
+        frameHome.setVisible(true);
         
-        JLabel labelNama = new JLabel();
-        labelNama.setText("Nickname :");
-        labelNama.setBounds(190, 220, 100, 30);
-        labelNama.setOpaque(true);
-        nickname = new JTextField("");        
-        nickname.setBounds(289, 220, 100, 30);   
-        
-        JPasswordField password = new JPasswordField();   
-        JLabel Labelpass=new JLabel("Password:");    
-        Labelpass.setBounds(210,250, 100,30);    
-        password.setBounds(275,250,100,30);
-        
-        frameLogIn.add(buttonKembaliLogin);
-        frameLogIn.add(Labelpass);
-        frameLogIn.add(password);
-        frameLogIn.add(labelNama);
-        frameLogIn.add(nickname);
-        frameLogIn.add(buttonSubmitLogin);
+    }
 
-        frameLogIn.setLayout(null);
-//        frameRegister.setVisible(true);
+    public void login() {
+        panelLogin = new JPanel();
+        panelLogin.setLayout(null);
+        panelLogin.setBackground(Color.white);
+        panelLogin.setBounds(0, 20, 500, 600);
+        
+        JLabel titleLogin = new JLabel("LOGIN");
+        titleLogin.setBounds(50, 50, 400, 50);
+        titleLogin.setFont(new Font("Helvetica Neue", Font.BOLD, 30));
+        titleLogin.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        JLabel labelEmail = new JLabel("Email");
+        labelEmail.setBounds(130, 145, 100, 30);
+        labelEmail.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
+        email = new JTextField();
+        email.setBounds(130, 170, 250, 40);
+
+        JLabel labelpass = new JLabel("Password");
+        labelpass.setBounds(130, 215, 100, 30);
+        labelpass.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
+        password = new JPasswordField();
+        password.setBounds(130, 240, 250, 40);
+
+        buttonSubmitLogin = new JButton("LOG IN");
+        buttonSubmitLogin.setBounds(130, 300, 250, 50);
+        buttonSubmitLogin.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
+        buttonSubmitLogin.addActionListener(this);
         
         
-        buttonRegister.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                frameAwal.setVisible(false);
-                frameRegister.setVisible(true);
-                
-
-            }
-            });
+        panelLogin.add(labelEmail);
+        panelLogin.add(labelpass);
+        panelLogin.add(email);
+        panelLogin.add(password);
+        panelLogin.add(titleLogin);
+        panelLogin.add(buttonSubmitLogin);
         
-        buttonLogIn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                frameAwal.setVisible(false);
-                frameLogIn.setVisible(true);
-                
+        frameHome.add(panelLogin);
+    }
 
-            }
-            });
-
+    public void register(){
         
-        buttonKembaliReg.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                frameAwal.setVisible(true);
-                frameRegister.setVisible(false);
-                
+        panelRegister = new JPanel();
+        panelRegister.setLayout(null);
+        panelRegister.setBackground(Color.white);
+        panelRegister.setBounds(0, 20, 500, 600);
+        
+        JLabel titleRegister = new JLabel("REGISTER");
+        titleRegister.setBounds(50, 50, 400, 50);
+        titleRegister.setFont(new Font("Helvetica Neue", Font.BOLD, 30));
+        titleRegister.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        JLabel labelFirstName = new JLabel("First Name");
+        labelFirstName.setBounds(130, 145, 100, 30);
+        labelFirstName.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
+        firstname = new JTextField();
+        firstname.setBounds(130, 170, 250, 40);
 
-            }
-            });
+        JLabel labelLastName = new JLabel("Last Name");
+        labelLastName.setBounds(130, 215, 100, 30);
+        labelLastName.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
+        lastname = new JTextField();
+        lastname.setBounds(130, 240, 250, 40);
+        
+        JLabel labelEmail = new JLabel("Email");
+        labelEmail.setBounds(130, 285, 100, 30);
+        labelEmail.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
+        email = new JTextField();
+        email.setBounds(130, 310, 250, 40);
+        
+        JLabel labelPhoneNumber = new JLabel("Phone Number");
+        labelPhoneNumber.setBounds(130, 355, 200, 30);
+        labelPhoneNumber.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
+        phonenumber = new JTextField();
+        phonenumber.setBounds(130, 380, 250, 40);
+        
+        JLabel labelpass = new JLabel("Password");
+        labelpass.setBounds(130, 425, 100, 30);
+        labelpass.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
+        password = new JPasswordField();
+        password.setBounds(130, 450, 250, 40);
 
-        buttonKembaliLogin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                frameAwal.setVisible(true);
-                frameLogIn.setVisible(false);
-                
-
-            }
-            });
-
+        buttonSubmitRegister = new JButton("REGISTER");
+        buttonSubmitRegister.setBounds(130, 520, 250, 50);
+        buttonSubmitRegister.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
+        buttonSubmitRegister.addActionListener(this);
+        
+        panelRegister.add(labelFirstName);
+        panelRegister.add(labelLastName);
+        panelRegister.add(labelEmail);
+        panelRegister.add(labelPhoneNumber);
+        panelRegister.add(labelpass);
+        panelRegister.add(firstname);
+        panelRegister.add(lastname);
+        panelRegister.add(email);
+        panelRegister.add(phonenumber);
+        panelRegister.add(password);
+        panelRegister.add(titleRegister);
+        panelRegister.add(buttonSubmitRegister);
+        
+        frameHome.add(panelLogin);
+        
+        frameHome.add(panelRegister);
+    }
     
-    
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        if (ae.getSource() == buttonLogin) {
+            panelRegister.setVisible(false);
+            buttonLogin.setVisible(false);
+            buttonRegister.setVisible(true);
+            labelNanya.setText("Not a member? Sign up now!");
+            login();
+        }
+        if (ae.getSource() == buttonRegister) {
+            panelLogin.setVisible(false);
+            buttonLogin.setVisible(true);
+            buttonRegister.setVisible(false);
+            labelNanya.setText("Already have an account?");
+            register();
+        }
+        
+        if (ae.getSource() == buttonSubmitRegister) {
+            panelRegister.setVisible(false);
+            buttonLogin.setVisible(false);
+            buttonRegister.setVisible(true);
+            labelNanya.setText("Not a member? Sign up now!");
+            login();
+        }
+        
+        if (ae.getSource() == buttonSubmitLogin) {
+            frameHome.dispose();
+            new Menu_member();
+        }
     }
 
     public static void main(String[] args) {
-        new View();
+        new Menu_home();
     }
 }
