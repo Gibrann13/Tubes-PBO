@@ -5,10 +5,54 @@
  */
 package Model;
 
+public abstract class User {
 
-public class User {
     private int idUser;
     private String email;
     private String password;
     private UserType UserType;
+
+    public User(int idUser, String email, String password, UserType UserType) {
+        this.idUser = idUser;
+        this.email = email;
+        this.password = password;
+        this.UserType = UserType;
+    }
+
+    public User() {
+
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public UserType getUserType() {
+        return UserType;
+    }
+
+    public void setUserType(UserType UserType) {
+        this.UserType = UserType;
+    }
+
 }

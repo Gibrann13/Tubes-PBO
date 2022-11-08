@@ -5,7 +5,25 @@
  */
 package Model;
 
+public class Admin extends User {
 
-public class Admin {
-    
+    private String adminName;
+
+    public Admin(String adminName, int idUser, String email, String password, Model.UserType UserType) {
+        super(idUser, email, password, UserType);
+        this.adminName = adminName;
+    }
+
+    public Admin() {
+
+    }
+
+    public String getAdminName() {
+        return adminName;
+    }
+
+    public void setAdminName(String adminName) {
+        this.adminName = adminName;
+    }
+
 }
