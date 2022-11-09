@@ -232,9 +232,6 @@ public class Menu_home implements ActionListener {
             }else{
                 JOptionPane.showMessageDialog (null, "Email dan Password yang dimasukkan salah/belum berdaftar!", "LOGIN", JOptionPane.INFORMATION_MESSAGE);
             }
-            
-            
-            
         }
     }
 
