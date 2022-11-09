@@ -5,6 +5,7 @@
  */
 package View;
 
+import Model.Member;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -16,11 +17,13 @@ import javax.swing.*;
 public class Menu_member implements ActionListener{
 
     JFrame frameMember;
-    JButton pesanTiket, gantiJawal, pembatalanTiket, sewaMobil, beliVoucher, riwayatTransaksi;
+    JButton pesanTiket, gantiJadwal, pembatalanTiket, sewaMobil, beliVoucher, riwayatTransaksi;
     
     
     
     public Menu_member(){
+        Member member = Member.getMemberInst();
+        
         frameMember = new JFrame("MENU MEMBER");
         frameMember.pack();
         frameMember.setSize(1000, 700);
@@ -28,7 +31,7 @@ public class Menu_member implements ActionListener{
         frameMember.getContentPane().setBackground(new Color(51, 153, 255));
         frameMember.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        JLabel title = new JLabel("WELCOME #NAMAMEMBER TO TRAVEL GAJELAS");
+        JLabel title = new JLabel("WELCOME " + member.getFirstName() + " TO TRAVEL GAJELAS");
         title.setBounds(90, 50, 800, 50);
         title.setFont(new Font("Helvetica Neue", Font.BOLD, 30));
         title.setHorizontalAlignment(SwingConstants.CENTER);
@@ -38,10 +41,10 @@ public class Menu_member implements ActionListener{
         pesanTiket.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
         pesanTiket.addActionListener(this);
         
-        gantiJawal = new JButton("Ganti Jadwal");
-        gantiJawal.setBounds(550, 120, 250, 100);
-        gantiJawal.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
-        gantiJawal.addActionListener(this);
+        gantiJadwal = new JButton("Ganti Jadwal");
+        gantiJadwal.setBounds(550, 120, 250, 100);
+        gantiJadwal.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
+        gantiJadwal.addActionListener(this);
         
         pembatalanTiket = new JButton("Pembatalan Tiket");
         pembatalanTiket.setBounds(190, 270, 250, 100);
@@ -65,7 +68,7 @@ public class Menu_member implements ActionListener{
         
         frameMember.add(title);
         frameMember.add(pesanTiket);
-        frameMember.add(gantiJawal);
+        frameMember.add(gantiJadwal);
         frameMember.add(pembatalanTiket);
         frameMember.add(sewaMobil);
         frameMember.add(beliVoucher);
@@ -82,6 +85,20 @@ public class Menu_member implements ActionListener{
             new Menu_pesanTiket();
         }
         
+        if (ae.getSource() == gantiJadwal) {
+            frameMember.dispose();
+            new Menu_gantiJadwal();
+        }
+        
+        if (ae.getSource() == riwayatTransaksi) {
+            frameMember.dispose();
+            new Menu_riwayatTransaksi();
+        }
+        
+        if (ae.getSource() == pembatalanTiket) {
+            frameMember.dispose();
+            new Menu_pembatalanTiket();
+        }
     }
     
 //    public static void main(String[] args) {
