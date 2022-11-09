@@ -202,23 +202,26 @@ public class Menu_home implements ActionListener {
         }
         
         if (ae.getSource() == buttonSubmitRegister) {
-            member.setFirstName(firstname.getText());
-            member.setLastName(lastname.getText());
-            member.setEmail(email.getText());
-            member.setPassword(password.getText());
-            member.setPhoneNumber(phonenumber.getText());
-            
-            Controller_user ctrl = new Controller_user();
-            if (ctrl.insertNewMember(member)) {
-                panelRegister.setVisible(false);
-                buttonLogin.setVisible(false);
-                buttonRegister.setVisible(true);
-                labelNanya.setText("Not a member? Sign up now!");
-                login();
-            }else{
-                JOptionPane.showMessageDialog (null, "Register yang dilakukan gagal!", "REGISTER", JOptionPane.INFORMATION_MESSAGE);
+            if (firstname.getText().equals("") || lastname.getText().equals("") || email.getText().equals("") || password.getText().equals("") || phonenumber.getText().equals("")) {
+                JOptionPane.showMessageDialog (null, "Isi semua data!!", "REGISTER", JOptionPane.INFORMATION_MESSAGE);
+            }else {
+                member.setFirstName(firstname.getText());
+                member.setLastName(lastname.getText());
+                member.setEmail(email.getText());
+                member.setPassword(password.getText());
+                member.setPhoneNumber(phonenumber.getText());
+
+                Controller_user ctrl = new Controller_user();
+                if (ctrl.insertNewMember(member)) {
+                    panelRegister.setVisible(false);
+                    buttonLogin.setVisible(false);
+                    buttonRegister.setVisible(true);
+                    labelNanya.setText("Not a member? Sign up now!");
+                    login();
+                }else{
+                    JOptionPane.showMessageDialog (null, "Register yang dilakukan gagal!", "REGISTER", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
-            
         }
         
         if (ae.getSource() == buttonSubmitLogin) {
