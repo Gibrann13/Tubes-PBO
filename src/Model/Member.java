@@ -7,6 +7,8 @@ package Model;
 
 
 public class Member extends User{
+    
+    private static Member memberInst;
     private String firstName;
     private String lastName;
     private String phoneNumber;
@@ -22,6 +24,14 @@ public class Member extends User{
         this.phoneNumber = phoneNumber;
     }
 
+    public static Member getMemberInst(){
+        if(memberInst==null){
+            memberInst = new Member();
+            System.out.println("Member instance created for the first time.");
+        }
+        return memberInst;
+    }
+    
     public String getFirstName() {
         return firstName;
     }

@@ -5,6 +5,8 @@
  */
 package View;
 
+import Controller.Controller_user;
+import Model.Member;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -22,9 +24,11 @@ public class Menu_home implements ActionListener {
     JLabel title, title2, labelNanya;
     JButton buttonLogin, buttonRegister, buttonSubmitLogin, buttonSubmitRegister;
 
+    Member member = new Member();
+    
     public Menu_home() {
 
-        frameHome = new JFrame("Travel Gajelas");
+        frameHome = new JFrame("TRAVEL GAJELAS");
         frameHome.pack();
         frameHome.setSize(1000, 700);
         frameHome.setLocationRelativeTo(null);
@@ -198,16 +202,36 @@ public class Menu_home implements ActionListener {
         }
         
         if (ae.getSource() == buttonSubmitRegister) {
-            panelRegister.setVisible(false);
-            buttonLogin.setVisible(false);
-            buttonRegister.setVisible(true);
-            labelNanya.setText("Not a member? Sign up now!");
-            login();
+            member.setFirstName(firstname.getText());
+            member.setLastName(lastname.getText());
+            member.setEmail(email.getText());
+            member.setPassword(password.getText());
+            member.setPhoneNumber(phonenumber.getText());
+            
+            Controller_user ctrl = new Controller_user();
+            if (ctrl.insertNewMember(member)) {
+                panelRegister.setVisible(false);
+                buttonLogin.setVisible(false);
+                buttonRegister.setVisible(true);
+                labelNanya.setText("Not a member? Sign up now!");
+                login();
+            }else{
+                JOptionPane.showMessageDialog (null, "Register yang dilakukan gagal!", "REGISTER", JOptionPane.INFORMATION_MESSAGE);
+            }
+            
         }
         
         if (ae.getSource() == buttonSubmitLogin) {
-            frameHome.dispose();
-            new Menu_member();
+            Controller_user ctrl = new Controller_user();
+            if (ctrl.checkLogin(email.getText(), password.getText()) == true) {
+                frameHome.dispose();
+                new Menu_member();
+            }else{
+                JOptionPane.showMessageDialog (null, "Email dan Password yang dimasukkan salah/belum berdaftar!", "LOGIN", JOptionPane.INFORMATION_MESSAGE);
+            }
+            
+            
+            
         }
     }
 
