@@ -7,6 +7,7 @@ package Model;
 
 
 public class Admin extends User{
+    private static Admin adminInst;
     private String adminName;
 
     public Admin() {
@@ -16,7 +17,20 @@ public class Admin extends User{
         super(idUser, email, password, UserType);
         this.adminName = adminName;
     }
-
+    
+    public static Admin getAdminInst(){
+        if(adminInst==null){
+            adminInst = new Admin();
+            System.out.println("Admin instance created for the first time.");
+        }
+        return adminInst;
+    }
+    
+    public void deleteAdminInstance(){
+        adminInst = null;
+        System.out.println("Admin instance deleted.");
+    }
+    
     public String getAdminName() {
         return adminName;
     }

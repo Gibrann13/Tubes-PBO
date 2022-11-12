@@ -32,6 +32,11 @@ public class Member extends User{
         return memberInst;
     }
     
+    public void deleteMemberInstance(){
+        memberInst = null;
+        System.out.println("Member instance deleted.");
+    }
+    
     public String getFirstName() {
         return firstName;
     }

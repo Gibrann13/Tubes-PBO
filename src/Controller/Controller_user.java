@@ -17,7 +17,7 @@ public class Controller_user {
     
     static DatabaseHandler conn = new DatabaseHandler();
     
-    public boolean checkLogin(String email, String password){
+    public String checkLogin(String email, String password){
         conn.connect();
         String query = "SELECT * FROM member WHERE email='" + email + "'&&password='" + password + "'";
         Member member = Member.getMemberInst();
@@ -37,9 +37,34 @@ public class Controller_user {
         }
         
         if (member.getFirstName() == null) {
-            return false;
+            member.deleteMemberInstance();
+            
+            String query1 = "SELECT * FROM admin WHERE email='" + email + "'&&password='" + password + "'";
+            Admin admin = Admin.getAdminInst();
+            try {
+                Statement stmt = conn.con.createStatement();
+                System.out.println("2");
+                ResultSet rs = stmt.executeQuery(query1);
+                System.out.println("1");
+                while (rs.next()) {
+                    admin.setIdUser(rs.getInt("idAdmin"));
+                    admin.setAdminName(rs.getString("adminName"));
+                    admin.setEmail(rs.getString("email"));
+                    admin.setPassword(rs.getString("password"));
+                }
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
+            
+            if (admin.getAdminName() == null) {
+                admin.deleteAdminInstance();
+                return "gaada";
+            }else{
+                return "admin";
+            }
+            
         }else {
-            return true;
+            return "member";
         }
     }
     
@@ -64,4 +89,5 @@ public class Controller_user {
         }
     }
     
+   
 }

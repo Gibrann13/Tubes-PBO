@@ -226,13 +226,20 @@ public class Menu_home implements ActionListener {
         
         if (ae.getSource() == buttonSubmitLogin) {
             Controller_user ctrl = new Controller_user();
-            if (ctrl.checkLogin(email.getText(), password.getText()) == true) {
+            if (ctrl.checkLogin(email.getText(), password.getText()).equals("member")) {
                 frameHome.dispose();
                 new Menu_member();
+            }else if (ctrl.checkLogin(email.getText(), password.getText()).equals("admin")) {
+                frameHome.dispose();
+                new MenuH_admin();
             }else{
                 JOptionPane.showMessageDialog (null, "Email dan Password yang dimasukkan salah/belum berdaftar!", "LOGIN", JOptionPane.INFORMATION_MESSAGE);
             }
         }
+        
+        
+        
+        
     }
 
     public static void main(String[] args) {
