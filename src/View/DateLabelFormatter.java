@@ -15,7 +15,7 @@ import javax.swing.JFormattedTextField;
  * @author jonjovio
  */
 public class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
-    private String datePattern = "dd-MM-yyyy";
+    private String datePattern = "yyyy-MM-dd";
     private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 
     @Override

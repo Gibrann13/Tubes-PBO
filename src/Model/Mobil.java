@@ -13,6 +13,9 @@ public class Mobil {
     private String jenisMobil;
     private int banyakKursi;
 
+    public Mobil(){
+    }
+    
     public Mobil(String jenisMobil, int banyakKursi) {
         this.jenisMobil = jenisMobil;
         this.banyakKursi = banyakKursi;

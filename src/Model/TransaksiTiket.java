@@ -13,22 +13,22 @@ import java.util.Date;
  * @author ASUS
  */
 public class TransaksiTiket extends Transaksi{
-    private ArrayList<Tiket> tiket = new ArrayList<>();
-
+    private Tiket tiket = new Tiket();
+    
+    
     public TransaksiTiket() {
     }
 
-    public TransaksiTiket(int idTransaksi, double totalPembayaran, Date date, String caraPembayaran, User user) {
-        super(idTransaksi, totalPembayaran, date, caraPembayaran, user);
+    public TransaksiTiket(int idTransaksi, double totalPembayaran, Date date, String caraPembayaran, Member member) {
+        super(idTransaksi, totalPembayaran, date, caraPembayaran, member);
     }
 
-    public ArrayList<Tiket> getTiket() {
+    public Tiket getTiket() {
         return tiket;
     }
 
-    public void setTiket(ArrayList<Tiket> tiket) {
+    public void setTiket(Tiket tiket) {
         this.tiket = tiket;
     }
-    
     
 }

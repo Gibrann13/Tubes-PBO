@@ -10,13 +10,16 @@ import java.util.Date;
 
 
 public class Tiket {
-   private int idTiket;
-   private Date date;
-   private String jam;
-   private double harga;
-   private Mobil mobil;
-   private Rute rute;
+    private int idTiket;
+    private Date date;
+    private String jam;
+    private double harga;
+    private Mobil mobil = new Mobil();
+    private Rute rute = new Rute();
 
+    public Tiket(){
+    }
+   
     public Tiket(int idTiket, Date date, String jam, double harga, Mobil mobil, Rute rute) {
         this.idTiket = idTiket;
         this.date = date;
