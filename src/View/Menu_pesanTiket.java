@@ -5,8 +5,12 @@
  */
 package View;
 
+import Controller.Controller_tiket;
+import Model.Seat;
+import Model.Tiket;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.swing.*;
 import org.jdatepicker.impl.*;
@@ -21,10 +25,16 @@ public class Menu_pesanTiket implements ActionListener{
     JLabel title, title2, labelSeat, labelQrGopay, labelBca;
     JComboBox lokasi, rute, jumlahPenumpang;
     JDatePickerImpl datePicker;
+    JDatePanelImpl datePanel;
     JButton home, next, back, jam[],seatBut[], gopay, bca;
     JScrollPane scrollPaneForm2;
-    
-    int banyakSeatDipilih;
+    int banyakSeatDipilih, tiketKe;
+    String jamDipilih, caraBayar;
+    ArrayList<Tiket> tiket = new ArrayList<>();
+    ArrayList<String> rut = new ArrayList<>();
+    Seat seatDipilih = new Seat();
+    ArrayList<Integer> seatUdahDipesan = new ArrayList<>();
+    Controller_tiket ctrl = new Controller_tiket();
     
     Menu_pesanTiket(){
         framePesanTiket = new JFrame("MENU PESAN TIKET");
@@ -79,24 +89,25 @@ public class Menu_pesanTiket implements ActionListener{
         p.put("text.today", "Today");
         p.put("text.month", "Month");
         p.put("text.year", "Year");
-        JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+        datePanel = new JDatePanelImpl(model, p);
         datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
         datePicker.setBounds(50, 130, 200, 30);
-        datePicker.addActionListener(this);
+        datePanel.addActionListener(this);
         
         JLabel labelLokasi = new JLabel("Lokasi Keberangkatan");
         labelLokasi.setBounds(50, 170, 200, 30);
         labelLokasi.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
-        String lok[]={"Lokasi","Bandung","Jakarta","Malang","Surabaya"};
-        lokasi = new JComboBox(lok);
+        ArrayList<String> lok = ctrl.getKota();
+        lokasi = new JComboBox(new DefaultComboBoxModel<String>(lok.toArray(new String[0])));
         lokasi.setBounds(50, 200, 200, 30);
         lokasi.addActionListener(this);
+        lokasi.setEnabled(false);
         
         JLabel labelRute = new JLabel("Rute");
         labelRute.setBounds(50, 240, 200, 30);
         labelRute.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
-        String rut[]={"Rute","Bandung","Jakarta","Malang","Surabaya"};
-        rute = new JComboBox(rut);
+        rut = ctrl.getRute((String) lokasi.getSelectedItem(), "");
+        rute = new JComboBox(new DefaultComboBoxModel<String>(rut.toArray(new String[0])));
         rute.setBounds(50, 270, 200, 30);
         rute.addActionListener(this);
         rute.setEnabled(false);
@@ -104,7 +115,7 @@ public class Menu_pesanTiket implements ActionListener{
         JLabel labelPenumpang = new JLabel("Total Penumpang");
         labelPenumpang.setBounds(50, 310, 200, 30);
         labelPenumpang.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
-        String pen[]={"Total Penumpang","1","2","3","4","5"};
+        String pen[]={"1","2","3","4"};
         jumlahPenumpang = new JComboBox(pen);
         jumlahPenumpang.setBounds(50, 340, 200, 30);
         jumlahPenumpang.addActionListener(this);
@@ -114,6 +125,7 @@ public class Menu_pesanTiket implements ActionListener{
         next.setBounds(100, 450, 300, 50);
         next.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
         next.addActionListener(this);
+        next.setEnabled(false);
         
         panelForm1.add(labelTanggal);
         panelForm1.add(datePicker);
@@ -136,9 +148,11 @@ public class Menu_pesanTiket implements ActionListener{
 
         int xBut = 50;
         int yBut = 100;
-        jam = new JButton[5];
+        jam = new JButton[tiket.size()];
+        
+        
         for (int i = 0; i < jam.length; i++) {
-            jam[i] = new JButton(i+12 + ".00");
+            jam[i] = new JButton(tiket.get(i).getJam());
             if (i == 0) {
                 jam[i].setBounds(xBut, yBut, 175, 50);
             }else if (i % 2 == 0) {
@@ -155,23 +169,37 @@ public class Menu_pesanTiket implements ActionListener{
         
         ImageIcon image1;
         JLabel img = new JLabel();
-        image1 = new ImageIcon(getClass().getResource("smallvan.png"));
+        if (tiket.get(tiketKe).getMobil().getJenisMobil().equals("van")) {
+            image1 = new ImageIcon(getClass().getResource("smallvan.png"));
+        }else {
+            image1 = new ImageIcon(getClass().getResource("bus1.png"));
+        }
+        
         img.setIcon(image1);
         yBut += 150;
         img.setBounds(50, yBut, 400, 500);
         img.setHorizontalAlignment(SwingConstants.CENTER);
         
-        seatBut = new JButton[6];
+        seatBut = new JButton[tiket.get(tiketKe).getMobil().getBanyakKursi()];
         yBut += 500;
-        xBut = (500 - 60*(seatBut.length))/2;
+        xBut = (500 - 66*(seatBut.length))/2;
+        if (tiket.get(tiketKe).getMobil().getJenisMobil().equals("bus")) {
+            xBut = (500 - 66*(seatBut.length/2))/2;
+        }
+        
         for (int i = 0; i < seatBut.length; i++) {
             
-            seatBut[i] = new JButton(i + "");
-            seatBut[i].setBounds(xBut, yBut, 50, 50);
-            xBut += 60;
+            seatBut[i] = new JButton(i+1 + "");
+            seatBut[i].setBounds(xBut, yBut, 60, 50);
+            xBut += 66;
             seatBut[i].setBackground(Color.lightGray);
             seatBut[i].setFont(new Font("Helvetica Neue", Font.BOLD, 20));
             seatBut[i].addActionListener(this);
+            seatBut[i].setEnabled(false);
+            if (i == 6) {
+                yBut += 70;
+                xBut = (500 - 66*(seatBut.length/2))/2;
+            }
         }
         
         back = new JButton("BACK");
@@ -179,6 +207,7 @@ public class Menu_pesanTiket implements ActionListener{
         back.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
         back.addActionListener(this);
         next.setBounds(270, yBut + 100, 150, 50);
+        next.setEnabled(false);
         
         for (int i = 0; i < jam.length; i++) {
             panelForm2.add(jam[i]);
@@ -205,35 +234,40 @@ public class Menu_pesanTiket implements ActionListener{
         title.setText("Booking Detail");
         title2.setText("Payment Detail");
         title.setBounds(30, 20, 400, 50);
-        title2.setBounds(30, 200, 400, 50);
+        title2.setBounds(30, 230, 400, 50);
         
-        JLabel labelRuteTrans = new JLabel("RUTE: INI ISI RUTE YANG DIPILIH");
+        JLabel labelRuteTrans = new JLabel("RUTE: " + tiket.get(0).getRute().getKeberangkatan() + "-" + tiket.get(0).getRute().getTujuan());
         labelRuteTrans.setBounds(30, 60, 400, 50);
         labelRuteTrans.setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 18));
         
-        JLabel labelTanggalBerangkatTrans = new JLabel("TANGGAL: TANGGAL DIA BERANGKAT");
+        JLabel labelTanggalBerangkatTrans = new JLabel("TANGGAL: " + tiket.get(0).getDate());
         labelTanggalBerangkatTrans.setBounds(30, 90, 400, 50);
         labelTanggalBerangkatTrans.setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 18));
         
-        JLabel labelJamBerangkatTrans = new JLabel("JAM: JAM DIA BERANGKAT");
+        JLabel labelJamBerangkatTrans = new JLabel("JAM: " + tiket.get(0).getJam());
         labelJamBerangkatTrans.setBounds(30, 120, 400, 50);
         labelJamBerangkatTrans.setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 18));
         
-        JLabel labelJumlahTiketTrans = new JLabel("JUMLAH TIKET: JUMLAH TIKET YANG DIBELI");
-        labelJumlahTiketTrans.setBounds(30, 150, 400, 50);
+        JLabel labelJenisMobil = new JLabel("Mobil: " + tiket.get(0).getMobil().getJenisMobil());
+        labelJenisMobil.setBounds(30, 150, 400, 50);
+        labelJenisMobil.setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 18));
+        
+        JLabel labelJumlahTiketTrans = new JLabel("JUMLAH TIKET: " + Integer.parseInt((String) jumlahPenumpang.getSelectedItem()));
+        labelJumlahTiketTrans.setBounds(30, 180, 400, 50);
         labelJumlahTiketTrans.setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 18));
         
-        JLabel labelHargaTiketTrans = new JLabel("HARGA TIKET: HARGANYA");
-        labelHargaTiketTrans.setBounds(30, 250, 400, 50);
+        JLabel labelHargaTiketTrans = new JLabel("HARGA TIKET: " + tiket.get(0).getHarga());
+        labelHargaTiketTrans.setBounds(30, 280, 400, 50);
         labelHargaTiketTrans.setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 18));
         
-        JLabel labelTotalBayarTrans = new JLabel("TOTAL: TOTAL YANG DIBAYAR");
-        labelTotalBayarTrans.setBounds(30, 280, 400, 50);
+        JLabel labelTotalBayarTrans = new JLabel("TOTAL: " + tiket.get(0).getHarga() * Integer.parseInt((String) jumlahPenumpang.getSelectedItem()));
+        labelTotalBayarTrans.setBounds(30, 310, 400, 50);
         labelTotalBayarTrans.setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 18));
         
         panelDetail.add(labelRuteTrans);
         panelDetail.add(labelTanggalBerangkatTrans);
         panelDetail.add(labelJamBerangkatTrans);
+        panelDetail.add(labelJenisMobil);
         panelDetail.add(labelJumlahTiketTrans);
         panelDetail.add(labelHargaTiketTrans);
         panelDetail.add(labelTotalBayarTrans);
@@ -297,41 +331,58 @@ public class Menu_pesanTiket implements ActionListener{
             new Menu_member();
         }
         
-        if (ae.getSource() == datePicker) {
-//            if (datePicker.getModel().getValue() == null) {
-//
-//            }
+        if (ae.getSource() == datePanel) {
+            lokasi.setEnabled(true);
         }
         
         if (ae.getSource() == lokasi) {
-            if (lokasi.getSelectedItem().equals("Lokasi")) {
-                rute.setEnabled(false);
-            }else{
-                rute.setEnabled(true);
-            }
+            String pattern = "yyyy-MM-dd";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+            String date = simpleDateFormat.format((Date) datePicker.getModel().getValue());
+            
+            rut = ctrl.getRute((String) lokasi.getSelectedItem(), date);
+            rute.setModel(new DefaultComboBoxModel<String>(rut.toArray(new String[0])));
+            rute.setEnabled(true);
         }
         
         if (ae.getSource() == rute) {
-            if (lokasi.getSelectedItem().equals("Lokasi")) {
-                jumlahPenumpang.setEnabled(false);
-            }else{
-                jumlahPenumpang.setEnabled(true);
-            }
+            jumlahPenumpang.setEnabled(true);
+        }
+        
+        if (ae.getSource() == jumlahPenumpang) {
+            next.setEnabled(true);
         }
         
         if (ae.getSource() == next) {
             if (panelForm1.isVisible()) {
                 panelForm1.setVisible(false);
                 title2.setText("JAM & TEMPAT DUDUK");
+                String pattern = "yyyy-MM-dd";
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+                String date = simpleDateFormat.format((Date) datePicker.getModel().getValue());
+                String idRute = (String) rute.getSelectedItem();
+                tiket = ctrl.getTiket((String) lokasi.getSelectedItem(), date, Integer.parseInt(idRute.substring(0, 1)), idRute.substring(idRute.length() - 3), "");
                 form2();
             }else if (scrollPaneForm2.isVisible()) {
                 scrollPaneForm2.setVisible(false);
                 panelAwal.setVisible(false);
+                String pattern = "yyyy-MM-dd";
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+                String date = simpleDateFormat.format((Date) datePicker.getModel().getValue());
+                String idRute = (String) rute.getSelectedItem();
+                tiket = ctrl.getTiket((String) lokasi.getSelectedItem(), date, Integer.parseInt(idRute.substring(0, 1)), idRute.substring(idRute.length() - 3), jamDipilih);
+                tiketKe = 0;
+                
                 formTransaksi();
             }else if (panelTransaksi.isVisible()) {
-                JOptionPane.showMessageDialog (null, "Terima Kasih Telah Melakukan Pembayaran.\nPesanan anda akan segera di konfirmasi!", "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
-                framePesanTiket.dispose();
-                new Menu_member();
+                if (ctrl.setTransaksi(tiket.get(0).getIdTiket(), ctrl.transaksi(caraBayar, Integer.parseInt((String) jumlahPenumpang.getSelectedItem()), tiket.get(0).getHarga()), seatDipilih)) {
+                    JOptionPane.showMessageDialog (null, "Terima Kasih Telah Melakukan Pembayaran.\nPesanan anda akan segera di konfirmasi!", "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
+                    framePesanTiket.dispose();
+                    new Menu_member();
+                }else{
+                    JOptionPane.showMessageDialog (null, "Maaf, Transaksi gagal dilakukan!", "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
+                }
+                
             }
         }
         
@@ -351,6 +402,11 @@ public class Menu_pesanTiket implements ActionListener{
                 panelAwal.add(title2);
                 panelAwal.setVisible(true);
                 panelDetail.setVisible(false);
+                String pattern = "yyyy-MM-dd";
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+                String date = simpleDateFormat.format((Date) datePicker.getModel().getValue());
+                String idRute = (String) rute.getSelectedItem();
+                tiket = ctrl.getTiket((String) lokasi.getSelectedItem(), date, Integer.parseInt(idRute.substring(0, 1)), idRute.substring(idRute.length() - 3), "");
                 form2();
             }
             
@@ -359,31 +415,52 @@ public class Menu_pesanTiket implements ActionListener{
         // BIAR CUMAN BISA DIPAKE PAS FORM2 VISIBLE, SOALNYA KLO GA PAKE INI ERROR DIA
         if (panelForm1.isVisible() == false) {
             //INI FORNYA BUAT CEK ARRAY JAM KE BRPA YG DICLICK
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < tiket.size(); i++) {
                 if (ae.getSource() == jam[i]) {
                     //buat ganti warna baackground yg dipilih dan ga dipilih
                     jam[i].setBackground(Color.yellow);
-                    for (int j = 0; j < 5; j++) {
+                    tiketKe = i;
+                    System.out.println(i);
+                    jamDipilih = tiket.get(i).getJam();
+                    for (int j = 0; j < tiket.size(); j++) {
                         if (jam[j] != jam[i]) {
                             jam[j].setBackground(Color.lightGray);
                         }
+                    }
+                    
+                    next.setEnabled(false);
+                    seatUdahDipesan = ctrl.getSeatIsi(tiket.get(i).getIdTiket());
+                    for (int j = 0; j < tiket.get(tiketKe).getMobil().getBanyakKursi(); j++) {
+                        seatBut[j].setEnabled(true);
+                        banyakSeatDipilih = 0;
+                        seatDipilih.getSeat().clear();
+                        if (seatBut[j].getBackground() == Color.YELLOW) {
+                            seatBut[j].setBackground(Color.lightGray);
+                        }
+                        
+                    }
+                    for (int k = 0; k < seatUdahDipesan.size(); k++) {
+                        seatBut[seatUdahDipesan.get(k)-1].setEnabled(false);
                     }
                 }
             }
 
             //INI FORNYA BUAT CEK ARRAY SEAT KE BRPA YG DICLICK
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < tiket.get(tiketKe).getMobil().getBanyakKursi(); i++) {
                 if (ae.getSource() == seatBut[i]) {
                     //buat ganti warna baackground yg diclick
                     if (seatBut[i].getBackground() == Color.YELLOW) {
                         seatBut[i].setBackground(Color.lightGray);
                         banyakSeatDipilih--;
+                        seatDipilih.getSeat().remove(Integer.valueOf(i+1));
                     }else{
                         seatBut[i].setBackground(Color.YELLOW);
                         banyakSeatDipilih++;
+                        seatDipilih.getSeat().add(i+1);
                     }
 
                     if (banyakSeatDipilih == Integer.parseInt((String) jumlahPenumpang.getSelectedItem())) {
+                        next.setEnabled(true);
                         for (int j = 0; j < seatBut.length; j++) {
                             if (seatBut[j].getBackground() != Color.YELLOW) {
                                 seatBut[j].setEnabled(false);
@@ -393,12 +470,17 @@ public class Menu_pesanTiket implements ActionListener{
                         for (int j = 0; j < seatBut.length; j++) {
                             seatBut[j].setEnabled(true);
                         }
+                        for (int k = 0; k < seatUdahDipesan.size(); k++) {
+                            seatBut[seatUdahDipesan.get(k)-1].setEnabled(false);
+                        }
+                        next.setEnabled(false);
                     }
                 }
             }
         }
         
         if (ae.getSource() == gopay) {
+            caraBayar = "GoPay";
             gopay.setBackground(Color.yellow);
             bca.setBackground(Color.lightGray);
             labelQrGopay.setVisible(true);
@@ -406,6 +488,7 @@ public class Menu_pesanTiket implements ActionListener{
         }
         
         if (ae.getSource() == bca) {
+            caraBayar = "BCA";
             bca.setBackground(Color.yellow);
             gopay.setBackground(Color.lightGray);
             labelBca.setVisible(true);
