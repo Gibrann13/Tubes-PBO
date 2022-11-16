@@ -18,8 +18,8 @@ public class TransaksiVoucher extends Transaksi{
     public TransaksiVoucher() {
     }
 
-    public TransaksiVoucher(int idTransaksi, double totalPembayaran, Date date, String caraPembayaran, User user) {
-        super(idTransaksi, totalPembayaran, date, caraPembayaran, user);
+    public TransaksiVoucher(int idTransaksi, double totalPembayaran, Date date, String caraPembayaran, Member member) {
+        super(idTransaksi, totalPembayaran, date, caraPembayaran, member);
     }
 
     public ArrayList<Voucher> getVoucher() {

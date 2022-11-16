@@ -17,8 +17,8 @@ public class TransaksiSewa extends Transaksi{
     public TransaksiSewa() {
     }
 
-    public TransaksiSewa(Sewa sewa, int idTransaksi, double totalPembayaran, Date date, String caraPembayaran, User user) {
-        super(idTransaksi, totalPembayaran, date, caraPembayaran, user);
+    public TransaksiSewa(Sewa sewa, int idTransaksi, double totalPembayaran, Date date, String caraPembayaran, Member member) {
+        super(idTransaksi, totalPembayaran, date, caraPembayaran, member);
         this.sewa = sewa;
     }
     

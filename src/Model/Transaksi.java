@@ -16,17 +16,17 @@ public class Transaksi {
     private double totalPembayaran;
     private Date date;
     private String caraPembayaran;
-    private User user;
+    private Member member = new Member();
 
     public Transaksi(){
     }
     
-    public Transaksi(int idTransaksi, double totalPembayaran, Date date, String caraPembayaran, User user) {
+    public Transaksi(int idTransaksi, double totalPembayaran, Date date, String caraPembayaran, Member member) {
         this.idTransaksi = idTransaksi;
         this.totalPembayaran = totalPembayaran;
         this.date = date;
         this.caraPembayaran = caraPembayaran;
-        this.user = user;
+        this.member = member;
     }
 
     public int getIdTransaksi() {
@@ -61,12 +61,12 @@ public class Transaksi {
         this.caraPembayaran = caraPembayaran;
     }
 
-    public User getUser() {
-        return user;
+    public Member getMember() {
+        return member;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setMember(Member member) {
+        this.member = member;
     }
     
     
