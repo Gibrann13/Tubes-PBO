@@ -5,26 +5,30 @@
  */
 package Model;
 
+
 /**
  *
  * @author ASUS
  */
 public class Voucher {
-    private String idVoucher;
+    private int idVoucher;
     private double harga;
     private int banyak;
 
-    public Voucher(String idVoucher, double harga, int banyak) {
+    public Voucher() {
+    }
+    
+    public Voucher(int idVoucher, double harga, int banyak) {
         this.idVoucher = idVoucher;
         this.harga = harga;
         this.banyak = banyak;
     }
 
-    public String getIdVoucher() {
+    public int getIdVoucher() {
         return idVoucher;
     }
 
-    public void setIdVoucher(String idVoucher) {
+    public void setIdVoucher(int idVoucher) {
         this.idVoucher = idVoucher;
     }
 
@@ -43,6 +47,6 @@ public class Voucher {
     public void setBanyak(int banyak) {
         this.banyak = banyak;
     }
-    
+
     
 }
