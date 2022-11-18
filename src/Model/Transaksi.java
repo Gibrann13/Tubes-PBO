@@ -12,10 +12,12 @@ import java.util.Date;
  * @author ASUS
  */
 public class Transaksi {
+    
     private int idTransaksi;
     private double totalPembayaran;
     private Date date;
     private String caraPembayaran;
+    private boolean refund;
     private Member member = new Member();
 
     public Transaksi(){
@@ -28,7 +30,7 @@ public class Transaksi {
         this.caraPembayaran = caraPembayaran;
         this.member = member;
     }
-
+    
     public int getIdTransaksi() {
         return idTransaksi;
     }
@@ -68,6 +70,15 @@ public class Transaksi {
     public void setMember(Member member) {
         this.member = member;
     }
+
+    public boolean isRefund() {
+        return refund;
+    }
+
+    public void setRefund(boolean refund) {
+        this.refund = refund;
+    }
+    
     
     
 }

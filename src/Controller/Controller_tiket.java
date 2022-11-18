@@ -64,29 +64,7 @@ public class Controller_tiket implements Kota {
             ResultSet rs = stmt.executeQuery(query);
             String brkt = "", tjn = "";
             while (rs.next()) {
-                if (rs.getInt("berangkat") == BANDUNG) {
-                    brkt = "Bandung";
-                } else if (rs.getInt("berangkat") == JAKARTA) {
-                    brkt = "Jakarta";
-                } else if (rs.getInt("berangkat") == DEPOK) {
-                    brkt = "Depok";
-                } else if (rs.getInt("berangkat") == TANGGERANG) {
-                    brkt = "Tanggerang";
-                } else if (rs.getInt("berangkat") == BEKASI) {
-                    brkt = "Bekasi";
-                }
-                if (rs.getInt("tujuan") == BANDUNG) {
-                    tjn = "Bandung";
-                } else if (rs.getInt("tujuan") == JAKARTA) {
-                    tjn = "Jakarta";
-                } else if (rs.getInt("tujuan") == DEPOK) {
-                    tjn = "Depok";
-                } else if (rs.getInt("tujuan") == TANGGERANG) {
-                    tjn = "Tanggerang";
-                } else if (rs.getInt("tujuan") == BEKASI) {
-                    tjn = "Bekasi";
-                }
-                rute.add(rs.getInt("idRute") + " - " + brkt + "-" + tjn + " - " + rs.getString("jenisMobil"));
+                rute.add(rs.getInt("idRute") + " - " + printRute(rs.getInt("berangkat"), rs.getInt("tujuan")) + " - " + rs.getString("jenisMobil"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -155,7 +133,7 @@ public class Controller_tiket implements Kota {
 
     public static boolean setTransaksi(int idTiket, Transaksi trans, Seat seat) {
         conn.connect();
-        String query = "INSERT INTO transaksi VALUES(?,?,?,?,?)";
+        String query = "INSERT INTO transaksi VALUES(?,?,?,?,?,?)";
         try {
             PreparedStatement stmt = conn.con.prepareStatement(query);
             stmt.setInt(1, trans.getIdTransaksi());
@@ -163,6 +141,7 @@ public class Controller_tiket implements Kota {
             stmt.setDouble(3, trans.getTotalPembayaran());
             stmt.setDate(4, (java.sql.Date) trans.getDate());
             stmt.setString(5, trans.getCaraPembayaran());
+            stmt.setBoolean(6, trans.isRefund());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -173,7 +152,7 @@ public class Controller_tiket implements Kota {
 
     public static boolean setTransaksiTiket(int idTiket, Transaksi trans, Seat seat) {
         conn.connect();
-        
+
         String query = "SELECT idTransaksi FROM transaksi WHERE idMember = '" + trans.getMember().getIdUser() + "' && tanggal = '" + trans.getDate() + "' && totalPembayaran = '" + trans.getTotalPembayaran() + "' && caraPembayaran = '" + trans.getCaraPembayaran() + "'";
         int idTransaksi = -1;
         try {
@@ -187,7 +166,7 @@ public class Controller_tiket implements Kota {
             e.printStackTrace();
             return false;
         }
-        
+
         query = "INSERT INTO transaksi_tiket VALUES(?,?)";
         try {
             PreparedStatement stmt = conn.con.prepareStatement(query);
@@ -201,10 +180,10 @@ public class Controller_tiket implements Kota {
         return setSeat(seat);
     }
 
-    public static boolean setSeat(Seat seat){
+    public static boolean setSeat(Seat seat) {
         conn.connect();
         for (int i = 0; i < seat.getSeat().size(); i++) {
-            
+
             String query = "INSERT INTO seat VALUES(?,?,?)";
             try {
                 PreparedStatement stmt = conn.con.prepareStatement(query);
@@ -219,11 +198,11 @@ public class Controller_tiket implements Kota {
         }
         return true;
     }
-    
-    public static ArrayList<Integer> getSeatIsi(int idTiket){
+
+    public static ArrayList<Integer> getSeatIsi(int idTiket) {
         conn.connect();
-        
-        String query = "SELECT idTransaksi FROM transaksi_tiket WHERE idTiket='" + idTiket + "'";
+
+        String query = "SELECT a.idTransaksi FROM transaksi a INNER JOIN transaksi_tiket b ON a.idTransaksi = b.idTransaksi WHERE b.idTiket='" + idTiket + "' && a.refund = 0";
         ArrayList<Integer> idTik = new ArrayList<>();
         try {
             Statement stmt = conn.con.createStatement();
@@ -234,7 +213,7 @@ public class Controller_tiket implements Kota {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         ArrayList<Integer> seat = new ArrayList<>();
         for (int i = 0; i < idTik.size(); i++) {
             query = "SELECT seat FROM seat WHERE idTransaksi = '" + idTik.get(i) + "'";
@@ -248,8 +227,49 @@ public class Controller_tiket implements Kota {
                 e.printStackTrace();
             }
         }
-        
+
         return seat;
+    }
+    
+    public static String printRute(int berangkat, int tujuan) {
+        String brkt = null, tjn = null;
+        if (berangkat == BANDUNG) {
+            brkt = "Bandung";
+        } else if (berangkat == JAKARTA) {
+            brkt = "Jakarta";
+        } else if (berangkat == DEPOK) {
+            brkt = "Depok";
+        } else if (berangkat == TANGGERANG) {
+            brkt = "Tanggerang";
+        } else if (berangkat == BEKASI) {
+            brkt = "Bekasi";
+        }
+        if (tujuan == BANDUNG) {
+            tjn = "Bandung";
+        } else if (tujuan == JAKARTA) {
+            tjn = "Jakarta";
+        } else if (tujuan == DEPOK) {
+            tjn = "Depok";
+        } else if (tujuan == TANGGERANG) {
+            tjn = "Tanggerang";
+        } else if (tujuan == BEKASI) {
+            tjn = "Bekasi";
+        }
+        return brkt + "-" + tjn;
+    }
+    
+    public static boolean setPembatalanTiket(int idTransaksi){
+        conn.connect();
+        String query = "UPDATE transaksi SET refund = ? WHERE idTransaksi = " + idTransaksi + ";" ;
+        try {
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            stmt.setInt(1, 1);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     
 }

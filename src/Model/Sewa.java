@@ -14,18 +14,14 @@ import java.util.Date;
 public class Sewa {
     private int idSewa; 
     private double harga;
-    private String jam;
-    private Date date;
     private Mobil mobil;
     
     public Sewa(){
     }
     
-    public Sewa(int idSewa, double harga, String jam, Date date) {
+    public Sewa(int idSewa, double harga) {
         this.idSewa = idSewa;
         this.harga = harga;
-        this.jam = jam;
-        this.date = date;
     }
 
     public int getIdSewa() {
@@ -44,21 +40,14 @@ public class Sewa {
         this.harga = harga;
     }
 
-    public String getJam() {
-        return jam;
+    public Mobil getMobil() {
+        return mobil;
     }
 
-    public void setJam(String jam) {
-        this.jam = jam;
+    public void setMobil(Mobil mobil) {
+        this.mobil = mobil;
     }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
+    
     
     
 }

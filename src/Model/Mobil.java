@@ -10,6 +10,7 @@ package Model;
  * @author ASUS
  */
 public class Mobil {
+    private int idMobil;
     private String jenisMobil;
     private int banyakKursi;
 
@@ -35,6 +36,14 @@ public class Mobil {
 
     public void setBanyakKursi(int banyakKursi) {
         this.banyakKursi = banyakKursi;
+    }
+
+    public int getIdMobil() {
+        return idMobil;
+    }
+
+    public void setIdMobil(int idMobil) {
+        this.idMobil = idMobil;
     }
     
     

@@ -213,4 +213,8 @@ public class Menu_gantiJadwal implements ActionListener{
         
         
     }
+    
+    public static void main(String[] args) {
+        new Menu_gantiJadwal();
+    }
 }
