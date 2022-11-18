@@ -5,27 +5,35 @@
  */
 package View;
 
+import Controller.ControllerA_LihatUser;
+import Model.Transaksi;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Gibran<>
  */
-public class MenuA_lihatRiwayatUser implements ActionListener{
+public class MenuA_lihatRiwayatUser implements ActionListener {
+
     JFrame frameLihatRiwayatUser;
-    JPanel panelAwal,panelForm1;
-    JLabel title2;
+    JPanel panelAwal, panelForm1;
+    JLabel title2, text;
     JButton backKeMenu;
-    MenuA_lihatRiwayatUser(){
-        
+    ControllerA_LihatUser ctrl = new ControllerA_LihatUser();
+     MenuA_lihatRiwayatUser() {
+
         frameLihatRiwayatUser = new JFrame("MENU ADMIN LIHAT PENDAPATAN");
         frameLihatRiwayatUser.pack();
         frameLihatRiwayatUser.setSize(1000, 700);
@@ -47,7 +55,7 @@ public class MenuA_lihatRiwayatUser implements ActionListener{
         title2.setBounds(30, 210, 400, 50);
         title2.setFont(new Font("Helvetica Neue", Font.BOLD, 30));
         title2.setHorizontalAlignment(SwingConstants.CENTER);
-        
+
         panelAwal.add(title);
         panelAwal.add(title2);
 
@@ -57,7 +65,7 @@ public class MenuA_lihatRiwayatUser implements ActionListener{
         frameLihatRiwayatUser.setVisible(true);
 
     }
-    
+
     public void form1() { //MENU AWAL
 
         panelForm1 = new JPanel();
@@ -65,17 +73,37 @@ public class MenuA_lihatRiwayatUser implements ActionListener{
         panelForm1.setBackground(Color.white);
         panelForm1.setBounds(480, 20, 500, 600);
 
+        DefaultTableModel tableModel = new DefaultTableModel();
+        JTable table = new JTable(tableModel);
+        tableModel.addColumn("IdTransaksi");
+        tableModel.addColumn("Member");
+        tableModel.addColumn("totalBayar");
+        tableModel.addColumn("date");
+        tableModel.addColumn("caraBayar");
+        
+        table.setModel(tableModel);
+        JScrollPane scrollPane = new JScrollPane(table);
+        ArrayList<Transaksi> listUser = new ArrayList<>(ctrl.getAllTransaksi());
+        System.out.println(listUser);
+        for (int i = 0; i < listUser.size(); i++) {
+            tableModel.addRow(ctrl.buatTabel(listUser.get(i)));
+        }
+
+        panelForm1.add(scrollPane);
+
         backKeMenu = new JButton("BACK");
         backKeMenu.setBounds(80, 450, 150, 50);
         backKeMenu.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
         backKeMenu.addActionListener(this);
-        
+
         panelForm1.add(backKeMenu);
+        panelForm1.add(table);
 
         frameLihatRiwayatUser.add(panelForm1);
     }
     
-        @Override
+
+    @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == backKeMenu) {
             if (frameLihatRiwayatUser.isVisible()) {
@@ -84,6 +112,7 @@ public class MenuA_lihatRiwayatUser implements ActionListener{
             }
         }
     }
+
     public static void main(String[] args) {
         new MenuA_lihatRiwayatUser();
     }
