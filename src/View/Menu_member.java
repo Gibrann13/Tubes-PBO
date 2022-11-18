@@ -17,7 +17,7 @@ import javax.swing.*;
 public class Menu_member implements ActionListener{
 
     JFrame frameMember;
-    JButton pesanTiket, gantiJadwal, pembatalanTiket, sewaMobil, beliVoucher, riwayatTransaksi;
+    JButton pesanTiket, gantiJadwal, pembatalanTiket, sewaMobil, beliVoucher, riwayatTransaksi, logout;
     
     
     
@@ -66,6 +66,11 @@ public class Menu_member implements ActionListener{
         riwayatTransaksi.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
         riwayatTransaksi.addActionListener(this);
         
+        logout = new JButton("LOGOUT");
+        logout.setBounds(390, 550, 200, 50);
+        logout.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
+        logout.addActionListener(this);
+        
         frameMember.add(title);
         frameMember.add(pesanTiket);
         frameMember.add(gantiJadwal);
@@ -73,6 +78,7 @@ public class Menu_member implements ActionListener{
         frameMember.add(sewaMobil);
         frameMember.add(beliVoucher);
         frameMember.add(riwayatTransaksi);
+        frameMember.add(logout);
         frameMember.setLayout(null);
         frameMember.setVisible(true);
         
@@ -98,6 +104,13 @@ public class Menu_member implements ActionListener{
         if (ae.getSource() == pembatalanTiket) {
             frameMember.dispose();
             new Menu_pembatalanTiket();
+        }
+        
+        if (ae.getSource() == logout) {
+            Member member = Member.getMemberInst();
+            member.deleteMemberInstance();
+            frameMember.dispose();
+            new Menu_home();
         }
     }
     

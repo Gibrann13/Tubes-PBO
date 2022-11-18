@@ -13,7 +13,9 @@ import java.util.Date;
  */
 public class TransaksiSewa extends Transaksi{
     private Sewa sewa;
-
+    private Date tanggalSewa;
+    private int lamaSewa;
+    
     public TransaksiSewa() {
     }
 
@@ -28,6 +30,22 @@ public class TransaksiSewa extends Transaksi{
 
     public void setSewa(Sewa sewa) {
         this.sewa = sewa;
+    }
+
+    public Date getTanggalSewa() {
+        return tanggalSewa;
+    }
+
+    public void setTanggalSewa(Date tanggalSewa) {
+        this.tanggalSewa = tanggalSewa;
+    }
+
+    public int getLamaSewa() {
+        return lamaSewa;
+    }
+
+    public void setLamaSewa(int lamaSewa) {
+        this.lamaSewa = lamaSewa;
     }
     
     

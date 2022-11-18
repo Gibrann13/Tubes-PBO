@@ -5,15 +5,15 @@
  */
 package Model;
 
+public class Rute implements Kota {
 
-public class Rute implements Kota{
     private int idRute;
     private int tujuan;
     private int keberangkatan;
 
-    public Rute(){
+    public Rute() {
     }
-    
+
     public Rute(int idRute, int tujuan, int keberangkatan) {
         this.idRute = idRute;
         this.tujuan = tujuan;
@@ -43,5 +43,5 @@ public class Rute implements Kota{
     public void setKeberangkatan(int keberangkatan) {
         this.keberangkatan = keberangkatan;
     }
-    
+
 }
