@@ -5,6 +5,7 @@
  */
 package View;
 
+import Controller.ControllerA_Pendapatan;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -14,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 /**
@@ -27,7 +29,9 @@ public class MenuA_lihatPendapatan implements ActionListener {
     JLabel title2;
     JButton backKeMenu, ButtonSubmit;
     JComboBox Bulan, Tahun;
-
+    JTextField hasilPendapatan;
+    
+    ControllerA_Pendapatan ctrl = new ControllerA_Pendapatan();
     MenuA_lihatPendapatan() {
         frameLihatPendapatan = new JFrame("MENU ADMIN LIHAT PENDAPATAN");
         frameLihatPendapatan.pack();
@@ -87,7 +91,17 @@ public class MenuA_lihatPendapatan implements ActionListener {
         Tahun = new JComboBox(tahun);
         Tahun.setBounds(50, 270, 240, 30);
         Tahun.addActionListener(this);
-
+    
+        JLabel labelPendapatan = new JLabel("Total Pendapatan :");
+        labelPendapatan.setBounds(50, 300, 270, 30);
+        labelPendapatan.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
+        hasilPendapatan = new JTextField("");
+        hasilPendapatan.setBounds(50, 340, 200, 30);
+        hasilPendapatan.setEnabled(false);
+        
+        panelForm1.add(labelPendapatan);
+        panelForm1.add(hasilPendapatan);
+        
         panelForm1.add(labelBulan);
         panelForm1.add(labelTahun);
         panelForm1.add(Bulan);
@@ -105,6 +119,14 @@ public class MenuA_lihatPendapatan implements ActionListener {
                 frameLihatPendapatan.setVisible(false);
                 new MenuH_admin();
             }
+        }
+        
+        if (ae.getSource() == ButtonSubmit) {
+            int n = Bulan.getSelectedIndex();
+            String m = Tahun.getSelectedItem().toString();
+            int a = ctrl.cariPendapatan(n + 1,m);
+            hasilPendapatan.setText(String.valueOf(a));
+//            hasilPendapatan.setEnabled(true);
         }
     }
 
