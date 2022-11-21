@@ -5,17 +5,32 @@
  */
 package View;
 
+import Controller.ControllerA_updateTiket;
+import Controller.Controller_tiket;
+import Model.Mobil;
+import Model.Rute;
+import Model.Tiket;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import org.jdatepicker.impl.*;
 
 /**
  *
@@ -27,8 +42,15 @@ public class MenuA_updateTiket implements ActionListener{
     JLabel title2;
     JPanel panelAwal,panelForm1,panelForm3,panelForm4,panelForm2;
     JButton backKeMenu,ButtonSubmitUpdate,backFromUpdate,backFromTambah,ButtonSubmitTambah,tambahTiket,updateTiket,deleteTiket,ButtonSubmit,backFromDelete;
-    JComboBox Tiket,TiketUpdate;
-    JTextField InputIdTiket,InputIdRute,InputIdMobil,InputJam,InputTglTiket,InputHargaTiket;
+    JComboBox Tiket,TiketUpdate, inputRute, inputMobil;
+    JTextField inputJamTiket, InputHargaTiket, InputIdTiket, InputIdRute, InputIdMobil;
+    JDatePickerImpl datePicker;
+    JDatePanelImpl datePanel;
+    ArrayList<String> rute = new ArrayList<>();
+    ArrayList<String> mobil = new ArrayList<>();
+    ControllerA_updateTiket ctrl = new ControllerA_updateTiket();
+    Controller_tiket ctrlT = new Controller_tiket();
+    
     MenuA_updateTiket(){
         frameUpdateTiket = new JFrame("MENU ADMIN UPDATE TIKET");
         frameUpdateTiket.pack();
@@ -135,41 +157,50 @@ public class MenuA_updateTiket implements ActionListener{
         panelForm4.setBackground(Color.white);
         panelForm4.setBounds(480, 20, 500, 600);
         
-        JLabel labelIDTiket = new JLabel("ID TIKET :");
-        labelIDTiket.setBounds(50, 40, 200, 30);
-        labelIDTiket.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
-        InputIdTiket = new JTextField("");        
-        InputIdTiket.setBounds(50, 70, 200, 30);
+        JLabel labelTanggal = new JLabel("Tanggal Tiket :");
+        labelTanggal.setBounds(50, 40, 200, 30);
+        labelTanggal.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
+        UtilDateModel model = new UtilDateModel();
+        Properties p = new Properties();
+        p.put("text.today", "Today");
+        p.put("text.month", "Month");
+        p.put("text.year", "Year");
+        datePanel = new JDatePanelImpl(model, p);
+        datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        datePicker.setBounds(50, 70, 200, 30);
+        datePanel.addActionListener(this);
         
-        JLabel labelIDRute = new JLabel("ID RUTE :");
-        labelIDRute.setBounds(50, 110, 200, 30);
-        labelIDRute.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
-        InputIdRute = new JTextField("");        
-        InputIdRute.setBounds(50, 140, 200, 30);
         
-        JLabel labelIDMobil = new JLabel("ID MOBIL :");
-        labelIDMobil.setBounds(50, 180, 200, 30);
-        labelIDMobil.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
-        InputIdMobil = new JTextField("");        
-        InputIdMobil.setBounds(50, 210, 200, 30);
+        
+        JLabel labelRute = new JLabel("Rute:");
+        labelRute.setBounds(50, 110, 200, 30);
+        labelRute.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
+        rute = ctrl.getRute();
+        inputRute = new JComboBox(new DefaultComboBoxModel<String>(rute.toArray(new String[0])));    
+        inputRute.setBounds(50, 140, 200, 30);
+        inputRute.addActionListener(this);
+        inputRute.setEnabled(false);
+        
+        JLabel labelMobil = new JLabel("MOBIL :");
+        labelMobil.setBounds(50, 180, 200, 30);
+        labelMobil.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
+        mobil = ctrl.getMobil();
+        inputMobil = new JComboBox(new DefaultComboBoxModel<String>(mobil.toArray(new String[0])));
+        inputMobil.setBounds(50, 210, 200, 30);
+        inputMobil.addActionListener(this);
+        inputMobil.setEnabled(false);
         
         JLabel labelJam = new JLabel("JAM :");
         labelJam.setBounds(50, 250, 200, 30);
         labelJam.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
-//        InputJam = new JTextField("");        
-//        InputJam.setBounds(50, 280, 200, 30);
-        
-        JLabel labelTglTiket = new JLabel("TANGGAL :");
-        labelTglTiket.setBounds(50, 320, 200, 30);
-        labelTglTiket.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
-//        InputTglTiket = new JTextField("");        
-//        InputTglTiket.setBounds(50, 350, 200, 30);
+        inputJamTiket = new JTextField("");        
+        inputJamTiket.setBounds(50, 280, 200, 30);
         
         JLabel labelHargaTiket = new JLabel("HARGA TIKET :");
-        labelHargaTiket.setBounds(50, 380, 200, 30);
+        labelHargaTiket.setBounds(50, 320, 200, 30);
         labelHargaTiket.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
         InputHargaTiket = new JTextField("");        
-        InputHargaTiket.setBounds(50, 410, 200, 30);
+        InputHargaTiket.setBounds(50, 350, 200, 30);
 
         backFromTambah = new JButton("BACK");
         backFromTambah.setBounds(80, 450, 150, 50);
@@ -181,16 +212,16 @@ public class MenuA_updateTiket implements ActionListener{
         ButtonSubmitTambah.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
         ButtonSubmitTambah.addActionListener(this);
         
-        panelForm4.add(labelIDMobil);
-        panelForm4.add(labelIDRute);
-        panelForm4.add(labelIDTiket);
-        panelForm4.add(backFromTambah);
-        panelForm4.add(InputIdTiket);
-        panelForm4.add(InputIdRute);
-        panelForm4.add(InputIdMobil);
+        panelForm4.add(labelRute);
+        panelForm4.add(labelMobil);
         panelForm4.add(labelJam);
-        panelForm4.add(labelTglTiket);
+        panelForm4.add(backFromTambah);
+        panelForm4.add(datePicker);
+        panelForm4.add(inputRute);
+        panelForm4.add(inputMobil);
+        panelForm4.add(labelTanggal);
         panelForm4.add(labelHargaTiket);
+        panelForm4.add(inputJamTiket);
         panelForm4.add(InputHargaTiket);
         panelForm4.add(ButtonSubmitTambah);
         
@@ -342,7 +373,45 @@ public class MenuA_updateTiket implements ActionListener{
                 form4();
             }
         }
+        
+        
+        // TAMBAH TIKET
+        if (ae.getSource() == datePanel) {
+            inputRute.setEnabled(true);
+        }
+        if (ae.getSource() == inputRute) {
+            inputMobil.setEnabled(true);
+        }
+        if (ae.getSource() == inputMobil) {
+            ButtonSubmitTambah.setEnabled(true);
+        }
+        if (ae.getSource() == ButtonSubmitTambah) {
+            if (inputJamTiket.getText().equals("") || InputHargaTiket.getText().equals("")) {
+                JOptionPane.showMessageDialog (null, "ISI SEMUA DATA!", "TAMBAH TIKET", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                Tiket tiket = new Tiket();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                tiket.setDate(java.sql.Date.valueOf(simpleDateFormat.format((Date) datePicker.getModel().getValue())));
+                tiket.setJam(inputJamTiket.getText());
+                tiket.setHarga(Double.parseDouble(InputHargaTiket.getText()));
+                String rutee = (String) inputRute.getSelectedItem();
+                int temp = rutee.indexOf(" ");//buat ambil brpa char sebelum space
+                tiket.getRute().setIdRute(Integer.parseInt(rutee.substring(0, temp)));
+                String mobb = (String) inputMobil.getSelectedItem();
+                int temp2 = rutee.indexOf(" ");//buat ambil brpa char sebelum space
+                tiket.getMobil().setIdMobil(Integer.parseInt(mobb.substring(0, temp2)));
+                if (ctrl.addTiket(tiket)) {
+                    JOptionPane.showMessageDialog (null, "Tiket berhasil ditambah!", "TAMBAH TIKET", JOptionPane.INFORMATION_MESSAGE);
+                    panelForm4.setVisible(false);
+                    form1();
+                }else{
+                    JOptionPane.showMessageDialog (null, "Tiket gagal ditambah!", "TAMBAH TIKET", JOptionPane.INFORMATION_MESSAGE);
+                }
 
+            }
+        }
+        
+        
     }
     public static void main(String[] args) {
         new MenuA_updateTiket();
