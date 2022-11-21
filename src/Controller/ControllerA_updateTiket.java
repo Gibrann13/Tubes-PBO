@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import static Controller.ControllerA_voucher.conn;
 import static Controller.Controller_tiket.printRute;
 import Model.*;
 import java.sql.PreparedStatement;
@@ -36,6 +37,23 @@ public class ControllerA_updateTiket {
             e.printStackTrace();
         }
         return rute;
+    }
+    
+    public static ArrayList<String> getTiket(){
+        conn.connect();
+        String query = "select * from tiket";
+        java.sql.ResultSet rs;
+        ArrayList<String> tiket = new ArrayList<>();
+        try {
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                tiket.add(rs.getInt("idTiket") + " - " + rs.getInt("idRute") + " - " + rs.getInt("idMobil") + " - " + rs.getInt("jam") + " - " + rs.getInt("jam"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tiket;
     }
     
     public static ArrayList<String> getMobil(){
@@ -73,4 +91,48 @@ public class ControllerA_updateTiket {
         }
         return true;
     }
+    
+    public static boolean deleteTiket(Tiket tiket) {
+        conn.connect();
+        int a = tiket.getIdTiket();
+        String query = "DELETE FROM tiket WHERE idTiket = '" + a + "'";
+        try {
+            Statement stmt = conn.con.createStatement();
+            
+            stmt.executeUpdate(query);
+            System.out.println(a);
+            return (true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return (false);
+        }
+    }
+    public ArrayList<Tiket> selectDataTiket(int idTiket){
+        ArrayList<Tiket>listTiket = new ArrayList<>();
+        conn.connect();
+        
+        System.out.println(idTiket);
+        String query = "SELECT * FROM voucher WHERE idVoucher = " +idTiket +" ";
+        try{
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                Tiket tiket = new Tiket();
+                tiket.setIdTiket(rs.getInt(1));
+//                tiket.setRute(printRute());
+//                tiket.setMobil(rs.getInt(2));
+                  tiket.setJam(rs.getString(4));
+                  tiket.setDate(rs.getDate(5));
+                  tiket.setHarga(rs.getInt(6));
+                listTiket.add(tiket);
+            }
+            return listTiket;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }      
+    }
+    
+
 }

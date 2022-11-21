@@ -39,6 +39,15 @@ public class ControllerA_LihatUser {
                 a.setTotalPembayaran(rs.getDouble("totalPembayaran"));
                 a.setDate(rs.getDate("tanggal"));
                 a.setCaraPembayaran(rs.getString("caraPembayaran"));
+                String m ;
+//                if(rs.getBoolean("refund") == true){
+//                    m = "true";
+//                } else {
+//                    m = "false";
+//                }
+//                System.out.println(rs.getB);
+                a.setRefund(rs.getBoolean(6));
+//                System.out.println(a.setRefund(true));
                 trans.add(a);
                 
             }
@@ -54,8 +63,8 @@ public class ControllerA_LihatUser {
         Double totalBayar = trans.getTotalPembayaran();
         Date tanggal = trans.getDate();
         String caraBayar = trans.getCaraPembayaran();
-        System.out.println(idTransaksi + " " + Member + " " + totalBayar + " " + tanggal + " " + caraBayar);
-        Object data[] = {idTransaksi,Member,totalBayar,tanggal,caraBayar};
+        boolean refund = trans.isRefund();
+        Object data[] = {idTransaksi,Member,totalBayar,tanggal,caraBayar,refund};
         return data;
     }
 }

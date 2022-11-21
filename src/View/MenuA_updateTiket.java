@@ -7,6 +7,7 @@ package View;
 
 import Controller.ControllerA_updateTiket;
 import Controller.Controller_tiket;
+import Controller.DatabaseHandler;
 import Model.Mobil;
 import Model.Rute;
 import Model.Tiket;
@@ -14,6 +15,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,11 +46,13 @@ public class MenuA_updateTiket implements ActionListener{
     JPanel panelAwal,panelForm1,panelForm3,panelForm4,panelForm2;
     JButton backKeMenu,ButtonSubmitUpdate,backFromUpdate,backFromTambah,ButtonSubmitTambah,tambahTiket,updateTiket,deleteTiket,ButtonSubmit,backFromDelete;
     JComboBox Tiket,TiketUpdate, inputRute, inputMobil;
-    JTextField inputJamTiket, InputHargaTiket, InputIdTiket, InputIdRute, InputIdMobil;
+    JTextField inputJamTiket, InputHargaTiket, InputIdTiket, InputIdRute, InputIdMobil,InputJam,InputTglTiket;
     JDatePickerImpl datePicker;
     JDatePanelImpl datePanel;
     ArrayList<String> rute = new ArrayList<>();
     ArrayList<String> mobil = new ArrayList<>();
+    ArrayList<Tiket> listTiket = new ArrayList<>();
+    Tiket tiket = new Tiket();
     ControllerA_updateTiket ctrl = new ControllerA_updateTiket();
     Controller_tiket ctrlT = new Controller_tiket();
     
@@ -128,8 +133,9 @@ public class MenuA_updateTiket implements ActionListener{
         JLabel labelTiket = new JLabel("Pilih Tiket");
         labelTiket.setBounds(50, 170, 200, 30);
         labelTiket.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
-        String IsiTiket[]={"Voucher1","Voucher2","Voucher3","Voucher2","Voucher1"};
-        Tiket = new JComboBox(IsiTiket);
+        Tiket = new JComboBox();
+        Tiket.removeAllItems();
+        ambilDataDelete();        
         Tiket.setBounds(50, 200, 200, 30);
         Tiket.addActionListener(this);
 
@@ -237,8 +243,10 @@ public class MenuA_updateTiket implements ActionListener{
         JLabel labelTiket = new JLabel("Pilih Tiket Yang Ingin Diubah");
         labelTiket.setBounds(50, 10, 400, 30);
         labelTiket.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
-        String IsiTiket[]={"Voucher1","Voucher2","Voucher3","Voucher2","Voucher1"};
-        TiketUpdate = new JComboBox(IsiTiket);
+//        String IsiTiket[]={"Voucher1","Voucher2","Voucher3","Voucher2","Voucher1"};
+        TiketUpdate = new JComboBox();
+        TiketUpdate.removeAllItems();
+        ambilDataUpdate();       
         TiketUpdate.setBounds(50, 40, 200, 30);
         TiketUpdate.addActionListener(this);
     
@@ -266,16 +274,16 @@ public class MenuA_updateTiket implements ActionListener{
         JLabel labelJam = new JLabel("JAM :");
         labelJam.setBounds(50, 260, 200, 30);
         labelJam.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
-//        InputJam = new JTextField("");        
-//        InputJam.setBounds(50, 290, 200, 30);
-//        InputJam.setEnabled(false);
+        InputJam = new JTextField("");        
+        InputJam.setBounds(50, 290, 200, 30);
+        InputJam.setEnabled(false);
         
         JLabel labelTglTiket = new JLabel("TANGGAL BARU :");
         labelTglTiket.setBounds(50, 320, 200, 30);
         labelTglTiket.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
-//        InputTglTiket = new JTextField("");        
-//        InputTglTiket.setBounds(50, 350, 200, 30);
-//        InputTglTiket.setEnabled(false);
+        InputTglTiket = new JTextField("");        
+        InputTglTiket.setBounds(50, 350, 200, 30);
+        InputTglTiket.setEnabled(false);
         
         JLabel labelHargaTiket = new JLabel("HARGA TIKET BARU :");
         labelHargaTiket.setBounds(50, 380, 200, 30);
@@ -307,7 +315,10 @@ public class MenuA_updateTiket implements ActionListener{
         panelForm2.add(labelIDTiket);
         panelForm2.add(TiketUpdate);
         panelForm2.add(labelTiket);
-        
+         panelForm2.add(InputHargaTiket);
+        panelForm2.add(InputTglTiket);
+        panelForm2.add(InputJam);
+        panelForm2.add(InputIdMobil);
         frameUpdateTiket.add(panelForm2);
     }
     
@@ -358,12 +369,19 @@ public class MenuA_updateTiket implements ActionListener{
                 title2.setText("DELETE TIKET");
                 form3();
             }
+            
         }
         if (ae.getSource() == updateTiket) {
             if (panelForm1.isVisible()) {
                 panelForm1.setVisible(false);
                 title2.setText("UPDATE TIKET");
                 form2();
+                
+//                listTiket = ctrl.selectDataTiket(Integer.parseInt((String) TiketUpdate.getSelectedItem()));
+//                
+//                InputTglTiket.setText(String.valueOf(listTiket.get(0).getDate()));
+//                InputJam.setText(String.valueOf(listTiket.get(0).getJam()));
+//                InputHargaTiket.setText(String.valueOf(listTiket.get(0).getHarga()));
             }
         }
         if (ae.getSource() == tambahTiket) {
@@ -373,7 +391,19 @@ public class MenuA_updateTiket implements ActionListener{
                 form4();
             }
         }
-        
+        if (ae.getSource() == ButtonSubmit) {
+
+            tiket.setIdTiket((int) Double.parseDouble((String) Tiket.getSelectedItem()));
+
+            
+            if (ctrl.deleteTiket(tiket)) {
+                panelForm3.setVisible(false);
+                form1();
+                JOptionPane.showMessageDialog(null, "Hapus Tiket Brhasil!", "HAPUS TIKET", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Hapus Tiket Gagal!", "HAPUS TIKET", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
         
         // TAMBAH TIKET
         if (ae.getSource() == datePanel) {
@@ -416,6 +446,39 @@ public class MenuA_updateTiket implements ActionListener{
     public static void main(String[] args) {
         new MenuA_updateTiket();
     }
+    
+    static DatabaseHandler conn = new DatabaseHandler();
+
+    public void ambilDataDelete() {
+        conn.connect();
+        String query = "select * from tiket";
+        java.sql.ResultSet rs;
+        try {
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                Tiket.addItem(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void ambilDataUpdate() {
+        conn.connect();
+        String query = "select * from tiket";
+        java.sql.ResultSet rs;
+        try {
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                TiketUpdate.addItem(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 }
