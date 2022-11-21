@@ -9,19 +9,48 @@ import java.util.Date;
 
 /**
  *
- * @author ASUS
+ * @author peter
  */
 public class Sewa {
-    private int idSewa; 
+
+    private int idSewa;
     private double harga;
+    private int hari;
+    private Date date;
     private Mobil mobil;
-    
-    public Sewa(){
-    }
-    
-    public Sewa(int idSewa, double harga) {
+
+    public Sewa(int idSewa, double harga, int hari, Date date, Mobil mobil, String lokasi) {
         this.idSewa = idSewa;
         this.harga = harga;
+        this.hari = hari;
+        this.date = date;
+        this.mobil = mobil;
+        this.lokasi = lokasi;
+    }
+
+    public String getLokasi() {
+        return lokasi;
+    }
+
+    public void setLokasi(String lokasi) {
+        this.lokasi = lokasi;
+    }
+    private String lokasi;
+
+    public Sewa() {
+    }
+
+
+    public int getHari() {
+        return hari;
+    }
+
+    public Mobil getMobil() {
+        return mobil;
+    }
+
+    public void setMobil(Mobil mobil) {
+        this.mobil = mobil;
     }
 
     public int getIdSewa() {
@@ -40,14 +69,16 @@ public class Sewa {
         this.harga = harga;
     }
 
-    public Mobil getMobil() {
-        return mobil;
+    public void setHari(int hari) {
+        this.hari = hari;
     }
 
-    public void setMobil(Mobil mobil) {
-        this.mobil = mobil;
+    public Date getDate() {
+        return date;
     }
-    
-    
-    
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
 }
