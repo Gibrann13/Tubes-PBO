@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -40,7 +41,7 @@ public class Menu_beliVoucher implements ActionListener {
         frameBeliVoucher.setSize(1000, 700);
         frameBeliVoucher.setLocationRelativeTo(null);
         frameBeliVoucher.getContentPane().setBackground(new Color(51, 153, 255));
-        frameBeliVoucher.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frameBeliVoucher.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         panelAwal = new JPanel();
         panelAwal.setLayout(null);
@@ -81,12 +82,10 @@ public class Menu_beliVoucher implements ActionListener {
         tipeVoucher1.setBounds(50, 180, 200, 30);
         tipeVoucher1.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
         tipeVoucher1.setVisible(false);
-
         hargaVoucher1 = new JLabel("Rp25.000");
         hargaVoucher1.setBounds(50, 210, 200, 30);
         hargaVoucher1.setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 20));
         hargaVoucher1.setVisible(false);
-
         tipeVoucher2 = new JLabel("HARGA VOUCHER 2:");
         tipeVoucher2.setBounds(50, 180, 200, 30);
         tipeVoucher2.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
@@ -96,7 +95,6 @@ public class Menu_beliVoucher implements ActionListener {
         hargaVoucher2.setBounds(50, 210, 200, 30);
         hargaVoucher2.setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 20));
         hargaVoucher2.setVisible(false);
-
         tipeVoucher3 = new JLabel("HARGA VOUCHER 3:");
         tipeVoucher3.setBounds(50, 180, 200, 30);
         tipeVoucher3.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
@@ -152,6 +150,7 @@ public class Menu_beliVoucher implements ActionListener {
         panelForm.add(backKeMenu);
         panelForm.add(buttonSubmit);
 
+        frameBeliVoucher.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frameBeliVoucher.add(panelForm);
     }
 
@@ -207,16 +206,16 @@ public class Menu_beliVoucher implements ActionListener {
                 tipeVoucher5.setVisible(false);
                 hargaVoucher5.setVisible(false);
             } else {
-                tipeVoucher1.setVisible(false);
-                hargaVoucher1.setVisible(false);
-                tipeVoucher2.setVisible(false);
-                hargaVoucher2.setVisible(false);
-                tipeVoucher3.setVisible(false);
-                hargaVoucher3.setVisible(false);
-                tipeVoucher4.setVisible(false);
-                hargaVoucher4.setVisible(false);
-                tipeVoucher5.setVisible(true);
-                hargaVoucher5.setVisible(true);
+//                tipeVoucher1.setVisible(false);
+//                hargaVoucher1.setVisible(false);
+//                tipeVoucher2.setVisible(false);
+//                hargaVoucher2.setVisible(false);
+//                tipeVoucher3.setVisible(false);
+//                hargaVoucher3.setVisible(false);
+//                tipeVoucher4.setVisible(false);
+//                hargaVoucher4.setVisible(false);
+//                tipeVoucher5.setVisible(true);
+//                hargaVoucher5.setVisible(true);
             }
         }
         if (ae.getSource() == backKeMenu) {
@@ -226,13 +225,12 @@ public class Menu_beliVoucher implements ActionListener {
             }
         }
         if (ae.getSource() == buttonSubmit) {
-
+            JOptionPane.showMessageDialog(null, "Voucher berhasil dibeli!", "Beli Voucher", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
     public void ambilDataBeli() {
 
-        //ControllerA_voucher conn = new ControllerA_voucher();
         conn.connect();
         String query = "select * from voucher";
         java.sql.ResultSet rs;
@@ -240,8 +238,13 @@ public class Menu_beliVoucher implements ActionListener {
             PreparedStatement stmt = conn.con.prepareStatement(query);
             rs = stmt.executeQuery(query);
             while (rs.next()) {
-                pilihVoucher.addItem(rs.getString(1));
+                pilihVoucher.addItem("Voucher " + rs.getString("idVoucher"));
+                tipeVoucher1 = new JLabel();
+                tipeVoucher1.setBounds(50, 180, 200, 30);
+                tipeVoucher1.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
+                tipeVoucher1.setText("Harga: " + rs.getDouble("hargaVoucher"));
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
