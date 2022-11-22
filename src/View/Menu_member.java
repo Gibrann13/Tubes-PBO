@@ -31,7 +31,7 @@ public class Menu_member implements ActionListener{
         frameMember.getContentPane().setBackground(new Color(51, 153, 255));
         frameMember.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        JLabel title = new JLabel("WELCOME " + member.getFirstName() + " TO TRAVEL GAJELAS");
+        JLabel title = new JLabel(member.welcomeText());
         title.setBounds(90, 50, 800, 50);
         title.setFont(new Font("Helvetica Neue", Font.BOLD, 30));
         title.setHorizontalAlignment(SwingConstants.CENTER);
