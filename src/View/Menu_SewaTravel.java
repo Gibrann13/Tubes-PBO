@@ -265,7 +265,7 @@ public void formTransaksi(){
                 }
 //        throw new UnsupportedOperationException("Not supported yet.");
     }
-//    public static void main(String[] args) {
-//        new Menu_SewaTravel();
-//    }
+    public static void main(String[] args) {
+        new Menu_SewaTravel();
+    }
 }

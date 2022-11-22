@@ -203,12 +203,12 @@ public class Menu_riwayatTransaksi implements ActionListener{
                 jenisMobil[i].setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 18));
                 xbut += 30;
 
-                tanggal[i] = new JLabel("Tanggal sewa: " + transSewa.get(i).getTanggalSewa());
+                tanggal[i] = new JLabel("Tanggal sewa: " + transSewa.get(i).getSewa().getDate());
                 tanggal[i].setBounds(ybut, xbut, 300, 50);
                 tanggal[i].setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 18));
                 xbut += 30;
 
-                lama[i] = new JLabel("Lama sewa: " + transSewa.get(i).getLamaSewa());
+                lama[i] = new JLabel("Lama sewa: " + transSewa.get(i).getSewa().getHari());
                 lama[i].setBounds(ybut, xbut, 300, 50);
                 lama[i].setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 18));
                 xbut += 30;

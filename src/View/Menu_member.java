@@ -95,7 +95,10 @@ public class Menu_member implements ActionListener{
             frameMember.dispose();
             new Menu_gantiJadwal();
         }
-        
+        if (ae.getSource() == sewaMobil) {
+            frameMember.dispose();
+            new Menu_SewaTravel();
+        }
         if (ae.getSource() == riwayatTransaksi) {
             frameMember.dispose();
             new Menu_riwayatTransaksi();
@@ -104,6 +107,10 @@ public class Menu_member implements ActionListener{
         if (ae.getSource() == pembatalanTiket) {
             frameMember.dispose();
             new Menu_pembatalanTiket();
+        }
+         if (ae.getSource() == beliVoucher) {
+            frameMember.dispose();
+            new Menu_beliVoucher();
         }
         
         if (ae.getSource() == logout) {
