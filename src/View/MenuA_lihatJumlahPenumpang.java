@@ -5,28 +5,42 @@
  */
 package View;
 
-import java.awt.Color;
-import java.awt.Font;
+import Controller.Controller_tiket;
+import Model.Seat;
+import Model.Tiket;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Properties;
+import java.util.regex.Pattern;
+import javax.swing.*;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 
 /**
  *
  * @author Gibran<>
  */
-public class MenuA_lihatJumlahPenumpang implements ActionListener{
-    JFrame frameLiatPenumpang;
-    JPanel panelAwal,panelForm1;
-    JButton backKeMenu,ButtonSubmit;
-        JComboBox lokasi, rute;
+public class MenuA_lihatJumlahPenumpang implements ActionListener {
 
-    MenuA_lihatJumlahPenumpang(){
+    JFrame frameLiatPenumpang;
+    JPanel panelAwal, panelForm1;
+    JLabel labelJumlahPenumpang;
+    JButton backKeMenu, ButtonSubmit;
+    JComboBox lokasi, rute, jam;
+    JDatePickerImpl datePicker;
+    JDatePanelImpl datePanel;
+    ArrayList<Tiket> tiket = new ArrayList<>();
+    ArrayList<String> rut = new ArrayList<>();
+    ArrayList<String> jamm = new ArrayList<>();
+    ArrayList<Integer> seatUdahDipesan = new ArrayList<>();
+    Controller_tiket ctrl = new Controller_tiket();
+    
+    MenuA_lihatJumlahPenumpang() {
         frameLiatPenumpang = new JFrame("MENU ADMIN LIHAT JUMLAH PENUMPANG");
         frameLiatPenumpang.pack();
         frameLiatPenumpang.setSize(1000, 700);
@@ -52,6 +66,7 @@ public class MenuA_lihatJumlahPenumpang implements ActionListener{
         frameLiatPenumpang.setVisible(true);
 
     }
+
     public void form1() { //MENU AWAL
 
         panelForm1 = new JPanel();
@@ -60,55 +75,73 @@ public class MenuA_lihatJumlahPenumpang implements ActionListener{
         panelForm1.setBounds(480, 20, 500, 600);
 
         backKeMenu = new JButton("BACK");
-        backKeMenu.setBounds(80, 450, 150, 50);
+        backKeMenu.setBounds(100, 450, 300, 50);
         backKeMenu.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
         backKeMenu.addActionListener(this);
-
-        ButtonSubmit = new JButton("Submit");
-        ButtonSubmit.setBounds(260, 450, 150, 50);
-        ButtonSubmit.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
-        ButtonSubmit.addActionListener(this);
 
         JLabel labelTanggal = new JLabel("Tanggal Keberangkatan");
         labelTanggal.setBounds(50, 100, 200, 30);
         labelTanggal.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
+
+        UtilDateModel model = new UtilDateModel();
+        Properties p = new Properties();
+        p.put("text.today", "Today");
+        p.put("text.month", "Month");
+        p.put("text.year", "Year");
+        datePanel = new JDatePanelImpl(model, p);
+        datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        datePicker.setBounds(50, 130, 200, 30);
+        datePanel.addActionListener(this);
         
-        //TANGGAL PAKE DATE
         
         
         JLabel labelLokasi = new JLabel("Lokasi Keberangkatan");
         labelLokasi.setBounds(50, 170, 200, 30);
         labelLokasi.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
-        String lok[]={"Lokasi","Bandung","Jakarta","Malang","Surabaya"};
-        lokasi = new JComboBox(lok);
+        ArrayList<String> lok = ctrl.getKota();
+        lokasi = new JComboBox(new DefaultComboBoxModel<String>(lok.toArray(new String[0])));
         lokasi.setBounds(50, 200, 200, 30);
         lokasi.addActionListener(this);
+        lokasi.setEnabled(false);
+        
         
         JLabel labelRute = new JLabel("Rute");
         labelRute.setBounds(50, 240, 200, 30);
         labelRute.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
-        String rut[]={"Rute","Bandung","Jakarta","Malang","Surabaya"};
-        rute = new JComboBox(rut);
+        rut = ctrl.getRute((String) lokasi.getSelectedItem(), "");
+        rute = new JComboBox(new DefaultComboBoxModel<String>(rut.toArray(new String[0])));
         rute.setBounds(50, 270, 200, 30);
         rute.addActionListener(this);
-       
-        JLabel labelJenisMobil = new JLabel("Jenis Mobil");
-        labelJenisMobil.setBounds(50, 310, 200, 30);
-        labelJenisMobil.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
-        //JENIS MOBIL ???
+        rute.setEnabled(false);
+        
+        
+        JLabel labelJam = new JLabel("Jam");
+        labelJam.setBounds(50, 310, 200, 30);
+        labelJam.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
+        jam = new JComboBox(new DefaultComboBoxModel<String>(jamm.toArray(new String[0])));
+        jam.setBounds(50, 340, 200, 30);
+        jam.addActionListener(this);
+        jam.setEnabled(false);
+        
+        labelJumlahPenumpang = new JLabel("");
+        labelJumlahPenumpang.setBounds(50, 380, 400, 30);
+        labelJumlahPenumpang.setFont(new Font("Helvetica Neue", Font.ITALIC, 24));
 
-        panelForm1.add(labelLokasi);
-        panelForm1.add(labelRute);
         panelForm1.add(labelTanggal);
-        panelForm1.add(labelJenisMobil);
+        panelForm1.add(datePicker);
+        panelForm1.add(labelLokasi);
         panelForm1.add(lokasi);
+        panelForm1.add(labelRute);
         panelForm1.add(rute);
+        panelForm1.add(labelJam);
+        panelForm1.add(jam);
+        panelForm1.add(labelJumlahPenumpang);
         panelForm1.add(backKeMenu);
-        panelForm1.add(ButtonSubmit);
 
         frameLiatPenumpang.add(panelForm1);
     }
- @Override
+
+    @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == backKeMenu) {
             if (frameLiatPenumpang.isVisible()) {
@@ -116,7 +149,48 @@ public class MenuA_lihatJumlahPenumpang implements ActionListener{
                 new MenuH_admin();
             }
         }
+        
+        if (ae.getSource() == datePanel) {
+            lokasi.setEnabled(true);
+        }
+        
+        if (ae.getSource() == lokasi) {
+            String pattern = "yyyy-MM-dd";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+            String date = simpleDateFormat.format((Date) datePicker.getModel().getValue());
+            
+            rut = ctrl.getRute((String) lokasi.getSelectedItem(), date);
+            rute.setModel(new DefaultComboBoxModel<String>(rut.toArray(new String[0])));
+            rute.setEnabled(true);
+        }
+        
+        if (ae.getSource() == rute) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String date = simpleDateFormat.format((Date) datePicker.getModel().getValue());
+            String rutee = (String) rute.getSelectedItem();
+            int temp = rutee.indexOf(" ");//buat ambil brpa char sebelum space
+            Pattern patternReverse = Pattern.compile("\\s");
+            String[] tempReverse = patternReverse.split(rutee);
+            int temp2 = tempReverse[tempReverse.length - 1].length();
+            tiket = ctrl.getTiket((String) lokasi.getSelectedItem(), date, Integer.parseInt(rutee.substring(0, temp)), rutee.substring(rutee.length() - temp2), "");
+            for (int i = 0; i < tiket.size(); i++) {
+                jamm.add(tiket.get(i).getJam());
+            }
+            jam.setModel(new DefaultComboBoxModel<String>(jamm.toArray(new String[0])));
+            jam.setEnabled(true);
+        }
+        
+        if (ae.getSource() == jam) {
+            for (int i = 0; i < tiket.size(); i++) {
+                if (tiket.get(i).getJam().equals(jam.getSelectedItem())) {
+                    seatUdahDipesan = ctrl.getSeatIsi(tiket.get(i).getIdTiket());
+                    labelJumlahPenumpang.setText("Jumlah Penumpang: " + Integer.toString(seatUdahDipesan.size()));
+                }
+            }
+            
+        }
     }
+
     public static void main(String[] args) {
         new MenuA_lihatJumlahPenumpang();
     }
