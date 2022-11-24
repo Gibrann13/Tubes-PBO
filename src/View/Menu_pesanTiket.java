@@ -333,7 +333,19 @@ public class Menu_pesanTiket implements ActionListener{
         }
         
         if (ae.getSource() == datePanel) {
-            lokasi.setEnabled(true);
+            long DAY_IN_MS = 1000 * 60 * 60 * 24;
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date currentDate = new Date();
+            Date hariSebelum = (Date) datePicker.getModel().getValue();
+            Date hariSebelum2 = new Date(hariSebelum.getTime() + 1 * DAY_IN_MS);
+//            System.out.println(currentDate);
+//            System.out.println(hariSebelum2);
+//            System.out.println("brpa " + hariSebelum2.compareTo(currentDate));
+            if (hariSebelum2.compareTo(currentDate) < 0) {
+                JOptionPane.showMessageDialog (null, "Maaf, Tanggal yang anda pilih udah lewat!", "PESAN TIKET", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                lokasi.setEnabled(true);
+            }
         }
         
         if (ae.getSource() == lokasi) {

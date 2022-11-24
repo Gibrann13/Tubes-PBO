@@ -9,6 +9,7 @@ import Controller.Controller_riwayatTransaksi;
 import Controller.Controller_tiket;
 import Model.TransaksiTiket;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.*;
 import java.text.ParseException;
@@ -22,6 +23,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 
 /**
@@ -31,6 +34,7 @@ import javax.swing.SwingConstants;
 public class Menu_pembatalanTiket implements ActionListener {
 
     JFrame framePembatalanTiket;
+    JPanel panelTiket;
     JButton home, next, pesanan[];
     ArrayList<TransaksiTiket> transTik = new ArrayList<>();
     Controller_riwayatTransaksi ctrlRT = new Controller_riwayatTransaksi();
@@ -42,9 +46,14 @@ public class Menu_pembatalanTiket implements ActionListener {
         framePembatalanTiket.pack();
         framePembatalanTiket.setSize(1000, 700);
         framePembatalanTiket.setLocationRelativeTo(null);
-        framePembatalanTiket.getContentPane().setBackground(new Color(51, 153, 255));
+        framePembatalanTiket.getContentPane().setBackground(new Color(51,153, 255));
         framePembatalanTiket.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        panelTiket = new JPanel();
+        panelTiket.setLayout(null);
+        panelTiket.setBackground(Color.white);
+        panelTiket.setBounds(480, 20, 500, 600);
+        
         JLabel title = new JLabel("SILAHKAN PILIH");
         title.setBounds(200, 20, 600, 50);
         title.setFont(new Font("Helvetica Neue", Font.BOLD, 30));
@@ -55,39 +64,45 @@ public class Menu_pembatalanTiket implements ActionListener {
         title2.setFont(new Font("Helvetica Neue", Font.BOLD, 30));
         title2.setHorizontalAlignment(SwingConstants.CENTER);
 
-        int xbut = 130;
+        int xbut = 20;
         int ybut = 150;
         int banyakTransaksi = 0;
         transTik = ctrlRT.getTransaksiTiket();
         pesanan = new JButton[transTik.size()];
         for (int i = 0; i < transTik.size(); i++) {
             if (!transTik.get(i).isRefund()) {
-                int temp = xbut;
-                pesanan[i] = new JButton("<html>" + ctrl.printRute(transTik.get(i).getTiket().getRute().getKeberangkatan(), transTik.get(i).getTiket().getRute().getTujuan()) + "<br>" + transTik.get(i).getTiket().getDate() + "<br>" + transTik.get(i).getTiket().getJam() + "</html>");
-                pesanan[i].setBounds(ybut, xbut, 300, 90);
-                pesanan[i].setFont(new Font("Helvetica Neue", Font.BOLD, 18));
-                pesanan[i].setBackground(Color.lightGray);
-                pesanan[i].addActionListener(this);
+                long DAY_IN_MS = 1000 * 60 * 60 * 24;
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date currentDate = new Date();
+                Date hariSebelum = new Date(transTik.get(i).getTiket().getDate().getTime() + 1 * DAY_IN_MS);
+                if (hariSebelum.compareTo(currentDate) > 0) {
+                    int temp = xbut;
+                    pesanan[i] = new JButton("<html>" + ctrl.printRute(transTik.get(i).getTiket().getRute().getKeberangkatan(), transTik.get(i).getTiket().getRute().getTujuan()) + "<br>" + transTik.get(i).getTiket().getDate() + "<br>" + transTik.get(i).getTiket().getJam() + "</html>");
+                    pesanan[i].setBounds(ybut, xbut, 300, 90);
+                    pesanan[i].setFont(new Font("Helvetica Neue", Font.BOLD, 18));
+                    pesanan[i].setBackground(Color.lightGray);
+                    pesanan[i].addActionListener(this);
 
-                if (banyakTransaksi % 2 == 0) {
-                    xbut = temp;
-                    ybut = 550;
-                } else {
-                    ybut = 150;
-                    xbut += 120;
+                    if (banyakTransaksi % 2 == 0) {
+                        xbut = temp;
+                        ybut = 550;
+                    } else {
+                        ybut = 150;
+                        xbut += 120;
+                    }
+                    banyakTransaksi++;
                 }
-                banyakTransaksi++;
             }
         }
 
         next = new JButton("BATALKAN TIKET");
-        next.setBounds(525, 500, 250, 60);
+        next.setBounds(525, 540, 250, 60);
         next.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
         next.addActionListener(this);
         next.setEnabled(false);
 
         home = new JButton("BACK TO HOME");
-        home.setBounds(225, 500, 250, 60);
+        home.setBounds(225, 540, 250, 60);
         home.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
         home.addActionListener(this);
 
@@ -97,10 +112,22 @@ public class Menu_pembatalanTiket implements ActionListener {
         framePembatalanTiket.add(title2);
         for (int i = 0; i < pesanan.length; i++) {
             if (!transTik.get(i).isRefund()) {
-                framePembatalanTiket.add(pesanan[i]);
+                long DAY_IN_MS = 1000 * 60 * 60 * 24;
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date currentDate = new Date();
+                Date hariSebelum = new Date(transTik.get(i).getTiket().getDate().getTime() + 1 * DAY_IN_MS);
+                if (hariSebelum.compareTo(currentDate) > 0) {
+                    panelTiket.add(pesanan[i]);
+                }
             }
         }
 
+        panelTiket.setBackground(new Color(252, 251,244));
+        JScrollPane scrollPaneForm2 = new JScrollPane(panelTiket, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPaneForm2.setBounds(0, 100, 980, 400);
+        
+        panelTiket.setPreferredSize(new Dimension(0, xbut + 100));
+        framePembatalanTiket.add(scrollPaneForm2);
         framePembatalanTiket.setLayout(null);
         framePembatalanTiket.setVisible(true);
     }
@@ -119,9 +146,9 @@ public class Menu_pembatalanTiket implements ActionListener {
             String d = simpleDateFormat.format(new Date(transTik.get(yangDipilih).getTiket().getDate().getTime() - 2 * DAY_IN_MS));
             Date currentDate = new Date();
             Date hariSebelum = new Date(transTik.get(yangDipilih).getTiket().getDate().getTime() - 2 * DAY_IN_MS);
-            System.out.println(currentDate);
-            System.out.println(hariSebelum);
-            System.out.println("brpa " + hariSebelum.compareTo(currentDate));
+//            System.out.println(currentDate);
+//            System.out.println(hariSebelum);
+//            System.out.println("brpa " + hariSebelum.compareTo(currentDate));
             if (hariSebelum.compareTo(currentDate) < 0) {
                 JOptionPane.showMessageDialog(null, "Maaf, Pembatalan hanya bisa dilakukan 2 hari sebelumnya!", "PEMBATALAN TIKET", JOptionPane.INFORMATION_MESSAGE);
             } else {
