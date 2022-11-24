@@ -29,7 +29,7 @@ public class MenuA_lihatPendapatan implements ActionListener {
     JLabel title2;
     JButton backKeMenu, ButtonSubmit;
     JComboBox Bulan, Tahun;
-    JTextField hasilPendapatan;
+    JLabel hasilPendapatan;
     
     ControllerA_Pendapatan ctrl = new ControllerA_Pendapatan();
     MenuA_lihatPendapatan() {
@@ -95,8 +95,9 @@ public class MenuA_lihatPendapatan implements ActionListener {
         JLabel labelPendapatan = new JLabel("Total Pendapatan :");
         labelPendapatan.setBounds(50, 300, 270, 30);
         labelPendapatan.setFont(new Font("Helvetica Neue", Font.ITALIC, 18));
-        hasilPendapatan = new JTextField("");
-        hasilPendapatan.setBounds(50, 340, 200, 30);
+        hasilPendapatan = new JLabel("");
+        hasilPendapatan.setBounds(50, 340, 400, 30);
+        hasilPendapatan.setFont(new Font("Helvetica Neue", Font.ITALIC, 24));
         hasilPendapatan.setEnabled(false);
         
         panelForm1.add(labelPendapatan);
@@ -124,9 +125,13 @@ public class MenuA_lihatPendapatan implements ActionListener {
         if (ae.getSource() == ButtonSubmit) {
             int n = Bulan.getSelectedIndex();
             String m = Tahun.getSelectedItem().toString();
-            int a = ctrl.cariPendapatan(n + 1,m);
-            hasilPendapatan.setText(String.valueOf(a));
-//            hasilPendapatan.setEnabled(true);
+            double a = ctrl.hitungPendapatan(ctrl.cariPendapatan(n + 1,m));
+            if (a == 0) {
+                hasilPendapatan.setText("Belum ada transaksi di bulan " + n);
+            }else{
+                hasilPendapatan.setText(String.valueOf(a));
+            }
+            
         }
     }
 
