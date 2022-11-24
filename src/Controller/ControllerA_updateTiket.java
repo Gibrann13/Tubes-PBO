@@ -8,6 +8,7 @@ package Controller;
 import static Controller.ControllerA_voucher.conn;
 import static Controller.Controller_tiket.printRute;
 import Model.*;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,7 +49,7 @@ public class ControllerA_updateTiket {
             PreparedStatement stmt = conn.con.prepareStatement(query);
             rs = stmt.executeQuery(query);
             while (rs.next()) {
-                tiket.add(rs.getInt("idTiket") + " - " + rs.getInt("idRute") + " - " + rs.getInt("idMobil") + " - " + rs.getInt("jam") + " - " + rs.getInt("jam"));
+                tiket.add(rs.getInt("idTiket") + " Id Rute = " + rs.getInt("idRute") + ", Id Mobil = " + rs.getInt("idMobil") + ", Jam = " + rs.getInt("jam") + ", Harga = " + rs.getInt("hargaTiket"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -112,19 +113,19 @@ public class ControllerA_updateTiket {
         conn.connect();
         
         System.out.println(idTiket);
-        String query = "SELECT * FROM voucher WHERE idVoucher = " +idTiket +" ";
+        String query = "SELECT * FROM tiket WHERE idTiket = " +idTiket +" ";
         try{
             PreparedStatement stmt = conn.con.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
             
             while(rs.next()){
                 Tiket tiket = new Tiket();
-                tiket.setIdTiket(rs.getInt(1));
-//                tiket.setRute(printRute());
-//                tiket.setMobil(rs.getInt(2));
-                  tiket.setJam(rs.getString(4));
-                  tiket.setDate(rs.getDate(5));
-                  tiket.setHarga(rs.getInt(6));
+                tiket.setIdTiket(rs.getInt("idTiket"));
+                tiket.getRute().setIdRute(rs.getInt("idRute"));
+                tiket.getMobil().setIdMobil(rs.getInt("idMobil"));
+                tiket.setJam(rs.getString("jam"));
+                tiket.setDate(rs.getDate("tanggalTiket"));
+                tiket.setHarga(rs.getInt("hargaTiket"));
                 listTiket.add(tiket);
             }
             return listTiket;
@@ -132,6 +133,23 @@ public class ControllerA_updateTiket {
             e.printStackTrace();
             return null;
         }      
+    }
+    
+    public boolean updateTiket(Tiket tiket, int idTiket) {
+        conn.connect();
+        String query = "UPDATE tiket SET jam = ?,tanggalTiket = ?,hargaTiket = ? WHERE idTiket = " + idTiket + ";" ;
+        System.out.println(idTiket);
+        try {
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            stmt.setString(1, tiket.getJam());
+            stmt.setDate(2, (Date) tiket.getDate());
+            stmt.setDouble(3, tiket.getHarga());
+            stmt.executeUpdate();
+            return (true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return (false);
+        }
     }
     
 
