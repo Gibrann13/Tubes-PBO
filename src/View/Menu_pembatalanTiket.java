@@ -171,8 +171,14 @@ public class Menu_pembatalanTiket implements ActionListener {
                 yangDipilih = i;
                 for (int j = 0; j < transTik.size(); j++) {
                     if (!transTik.get(j).isRefund()) {
-                        if (pesanan[j] != pesanan[i]) {
-                            pesanan[j].setBackground(Color.lightGray);
+                        long DAY_IN_MS = 1000 * 60 * 60 * 24;
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        Date currentDate = new Date();
+                        Date hariSebelum = new Date(transTik.get(j).getTiket().getDate().getTime() + 1 * DAY_IN_MS);
+                        if (hariSebelum.compareTo(currentDate) > 0) {
+                            if (pesanan[j] != pesanan[i]) {
+                                pesanan[j].setBackground(Color.lightGray);
+                            }
                         }
                     }
                 }
