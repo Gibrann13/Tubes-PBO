@@ -5,8 +5,7 @@
  */
 package View;
 
-import Controller.ControllerA_voucher;
-import Controller.DatabaseHandler;
+import Controller.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -20,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import Model.*;
 
 /**
  *
@@ -27,6 +27,7 @@ import javax.swing.SwingConstants;
  */
 public class Menu_beliVoucher implements ActionListener {
 
+    static int a;
     JFrame frameBeliVoucher;
     JPanel panelAwal, panelForm;
     JButton buttonSubmit, backKeMenu;
@@ -34,6 +35,9 @@ public class Menu_beliVoucher implements ActionListener {
     JLabel tipeVoucher1, tipeVoucher2, tipeVoucher3, tipeVoucher4, tipeVoucher5, hargaVoucher1, hargaVoucher2, hargaVoucher3, hargaVoucher4, hargaVoucher5;
 
     static DatabaseHandler conn = new DatabaseHandler();
+
+    TransaksiVoucher transaksiVoucher = new TransaksiVoucher();
+    ControllerA_voucher con = new ControllerA_voucher();
 
     Menu_beliVoucher() {
         frameBeliVoucher = new JFrame("MENU ADMIN BELI VOUCHER");
@@ -82,7 +86,7 @@ public class Menu_beliVoucher implements ActionListener {
         tipeVoucher1.setBounds(50, 180, 200, 30);
         tipeVoucher1.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
         tipeVoucher1.setVisible(false);
-        hargaVoucher1 = new JLabel("Rp25.000");
+        hargaVoucher1 = new JLabel("Rp50.000");
         hargaVoucher1.setBounds(50, 210, 200, 30);
         hargaVoucher1.setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 20));
         hargaVoucher1.setVisible(false);
@@ -91,7 +95,7 @@ public class Menu_beliVoucher implements ActionListener {
         tipeVoucher2.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
         tipeVoucher2.setVisible(false);
 
-        hargaVoucher2 = new JLabel("Rp50.000");
+        hargaVoucher2 = new JLabel("Rp25.000");
         hargaVoucher2.setBounds(50, 210, 200, 30);
         hargaVoucher2.setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 20));
         hargaVoucher2.setVisible(false);
@@ -224,8 +228,19 @@ public class Menu_beliVoucher implements ActionListener {
                 new Menu_member();
             }
         }
-        if (ae.getSource() == buttonSubmit) {
+
+        if (ae.getSource() == buttonSubmit) {            
+            transaksiVoucher.setIdTransaksi(5);
+
+            if (pilihVoucher.getSelectedItem().equals("Voucher 1")) {
+                transaksiVoucher.setIdVoucher(1);
+            } else if (pilihVoucher.getSelectedItem().equals("Voucher 2")) {
+                transaksiVoucher.setIdVoucher(2);
+            }
+            con.insertTransaksiVoucher(transaksiVoucher);
             JOptionPane.showMessageDialog(null, "Voucher berhasil dibeli!", "Beli Voucher", JOptionPane.INFORMATION_MESSAGE);
+            frameBeliVoucher.dispose();
+            new Menu_member();
         }
     }
 
@@ -249,4 +264,6 @@ public class Menu_beliVoucher implements ActionListener {
             e.printStackTrace();
         }
     }
+
+    
 }

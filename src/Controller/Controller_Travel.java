@@ -55,7 +55,7 @@ public class Controller_Travel implements Kota {
         }
         return mobil;
     }
-    public static ArrayList<String> getSewa(String lokasi,String date) {
+    public static ArrayList<String> getSewa(String lokasi,String date,String idMobil) {
         conn.connect();
         int lok = -1;
         for (int i = 0; i < 5; i++) {
