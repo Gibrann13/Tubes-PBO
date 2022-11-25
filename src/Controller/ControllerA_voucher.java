@@ -6,7 +6,7 @@
 package Controller;
 
 //import static Controller.Controller_user.conn;
-import Model.Voucher;
+import Model.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,9 +18,9 @@ import java.util.ArrayList;
  * @author Gibran<>
  */
 public class ControllerA_voucher {
-    
+
     static DatabaseHandler conn = new DatabaseHandler();
-    
+
     public boolean insertNewVoucher(Voucher voucher) {
         conn.connect();
         String query = "INSERT INTO voucher VALUES(?,?,?)";
@@ -29,7 +29,7 @@ public class ControllerA_voucher {
             stmt.setInt(1, voucher.getIdVoucher());
             stmt.setDouble(2, voucher.getHarga());
             stmt.setInt(3, voucher.getBanyak());
-            
+
             stmt.executeUpdate();
             return (true);
         } catch (SQLException e) {
@@ -37,15 +37,30 @@ public class ControllerA_voucher {
             return (false);
         }
     }
-    
-    
+
+    public boolean insertTransaksiVoucher(TransaksiVoucher transaksiVoucher) {
+        conn.connect();
+        String query = "INSERT INTO transaksi_voucher VALUES(?,?)";
+        try {
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            stmt.setInt(1, transaksiVoucher.getIdTransaksi());
+            stmt.setInt(2, transaksiVoucher.getIdVoucher());
+
+            stmt.executeUpdate();
+            return (true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return (false);
+        }
+    }
+
     public static boolean deleteVoucher(Voucher voucher) {
         conn.connect();
         int a = voucher.getIdVoucher();
         String query = "DELETE FROM voucher WHERE idVoucher = '" + a + "'";
         try {
             Statement stmt = conn.con.createStatement();
-            
+
             stmt.executeUpdate(query);
             System.out.println(a);
             return (true);
@@ -54,18 +69,17 @@ public class ControllerA_voucher {
             return (false);
         }
     }
-    
-    public ArrayList<Voucher> selectDataVoucher(int idVoucher){
-        ArrayList<Voucher>listVoucher = new ArrayList<>();
+
+    public ArrayList<Voucher> selectDataVoucher(int idVoucher) {
+        ArrayList<Voucher> listVoucher = new ArrayList<>();
         conn.connect();
-        
-        
-        String query = "SELECT * FROM voucher WHERE idVoucher = " +idVoucher +" ";
-        try{
+
+        String query = "SELECT * FROM voucher WHERE idVoucher = " + idVoucher + " ";
+        try {
             PreparedStatement stmt = conn.con.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
-            
-            while(rs.next()){
+
+            while (rs.next()) {
                 Voucher vcr = new Voucher();
                 vcr.setIdVoucher(rs.getInt(1));
                 vcr.setBanyak(rs.getInt(3));
@@ -76,12 +90,12 @@ public class ControllerA_voucher {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
-        }      
+        }
     }
-    
+
     public boolean updateVoucher(Voucher voucher, int idVoucher) {
         conn.connect();
-        String query = "UPDATE voucher SET idVoucher = ?,hargaVoucher = ?,banyakVoucher = ? WHERE idVoucher = " + idVoucher + ";" ;
+        String query = "UPDATE voucher SET idVoucher = ?,hargaVoucher = ?,banyakVoucher = ? WHERE idVoucher = " + idVoucher + ";";
         try {
             PreparedStatement stmt = conn.con.prepareStatement(query);
             stmt.setInt(1, voucher.getIdVoucher());
@@ -94,7 +108,5 @@ public class ControllerA_voucher {
             return (false);
         }
     }
-    
 
-    
 }

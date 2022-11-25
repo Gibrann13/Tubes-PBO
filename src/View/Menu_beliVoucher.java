@@ -228,8 +228,10 @@ public class Menu_beliVoucher implements ActionListener {
                 new Menu_member();
             }
         }
-        if (ae.getSource() == buttonSubmit) {
-            transaksiVoucher.setIdTransaksi(1);
+
+        if (ae.getSource() == buttonSubmit) {            
+            transaksiVoucher.setIdTransaksi(5);
+
             if (pilihVoucher.getSelectedItem().equals("Voucher 1")) {
                 transaksiVoucher.setIdVoucher(1);
             } else if (pilihVoucher.getSelectedItem().equals("Voucher 2")) {
@@ -263,4 +265,5 @@ public class Menu_beliVoucher implements ActionListener {
         }
     }
 
+    
 }
