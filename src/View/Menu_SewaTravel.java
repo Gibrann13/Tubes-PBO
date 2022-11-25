@@ -10,7 +10,9 @@ import Model.Sewa;
 import Model.Mobil;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 import javax.swing.*;
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -125,6 +127,12 @@ public void form1() {
         panelForm1.setBounds(480, 20, 500, 600);
         frameSewaTravel.add(panelForm1);
         
+        next = new JButton("NEXT");
+        next.setBounds(100, 450, 300, 50);
+        next.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
+        next.addActionListener(this);
+        next.setEnabled(false);
+        
         panelForm1.add(labelTanggal);
         panelForm1.add(datePicker);
         panelForm1.add(labelHari);
@@ -133,15 +141,9 @@ public void form1() {
         panelForm1.add(lokasi);
         panelForm1.add(labelMobil);
         panelForm1.add(mobil);
-        
-        next = new JButton("NEXT");
-        next.setBounds(100, 450, 300, 50);
-        next.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
-        next.addActionListener(this);
-        next.setEnabled(false);
-        
         panelForm1.add(next);
-        panelForm1.setEnabled(false);
+        
+        frameSewaTravel.add(panelForm1);
     }
 public void formTransaksi(){
         panelDetail = new JPanel();
@@ -254,7 +256,21 @@ public void formTransaksi(){
             mobil.setEnabled(true);
         }
         if (ae.getSource() == mobil) {
-            panelForm1.setEnabled(true);
+            next.setEnabled(true);
+        }
+        if(ae.getSource()==next){ 
+            if (panelForm1.isVisible()) {
+                panelForm1.setVisible(false);
+                title.setText("Booking Detail");
+                title2.setText("PAYMENT DETAIL");
+                String pattern = "yyyy-MM-dd";
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+                String date = simpleDateFormat.format((Date) datePicker.getModel().getValue());
+                String idMobil = (String) mobil.getSelectedItem();
+//                sewa=ctrl.getSewa((String)lokasi.getSelectedItem(),date,idMobil);
+            
+            formTransaksi();
+            }
         }
         if (ctrl.setTransaksi(sewa.get(0).getIdSewa(), ctrl.transaksi(caraBayar,sewa.get(0).getHari(), sewa.get(0).getHarga()))!=null) {
                     JOptionPane.showMessageDialog (null, "Terima Kasih Telah Melakukan Pembayaran.\nPesanan anda akan segera di konfirmasi!", "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
