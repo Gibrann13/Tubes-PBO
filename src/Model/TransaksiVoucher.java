@@ -14,7 +14,6 @@ import java.util.Date;
  */
 public class TransaksiVoucher extends Transaksi {
 
-    private int idTransaksi;
     private int idVoucher;
 
     private ArrayList<Voucher> voucher = new ArrayList<>();
@@ -33,14 +32,6 @@ public class TransaksiVoucher extends Transaksi {
 
     public void setVoucher(ArrayList<Voucher> voucher) {
         this.voucher = voucher;
-    }
-
-    public int getIdTransaksi() {
-        return idTransaksi;
-    }
-
-    public void setIdTransaksi(int idTransaksi) {
-        this.idTransaksi = idTransaksi;
     }
 
     public int getIdVoucher() {
