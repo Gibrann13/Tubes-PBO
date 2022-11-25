@@ -39,7 +39,10 @@ public class Admin extends User{
         this.adminName = adminName;
     }
 
-    
+    @Override
+    public String welcomeText() {
+        return "Welcome admin " + adminName + " to Travel Gajelas";
+    }
     
     
 }

@@ -375,11 +375,8 @@ public class MenuA_updateVoucher implements ActionListener {
 
             listVoucher = ctrl.selectDataVoucher(Integer.parseInt((String) VoucherUpdate.getSelectedItem()));          
             
-            a = Integer.parseInt(InputIdVoucherUp.getText());
-            b = Integer.parseInt(InputBanyakVoucher.getText());
-            c = Integer.parseInt(InputHargaVoucher.getText());
-            
-            Voucher voucher = new Voucher(a,b,c);
+  
+            Voucher voucher = new Voucher(Integer.parseInt(InputIdVoucherUp.getText()),Double.parseDouble(InputHargaVoucher.getText()),Integer.parseInt(InputBanyakVoucher.getText()));
             if (ctrl.updateVoucher(voucher, listVoucher.get(0).getIdVoucher())) {
                 panelForm2.setVisible(false);
                 form1();

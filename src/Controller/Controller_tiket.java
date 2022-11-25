@@ -265,6 +265,20 @@ public class Controller_tiket implements Kota {
             PreparedStatement stmt = conn.con.prepareStatement(query);
             stmt.setInt(1, 1);
             stmt.executeUpdate();
+            return deleteSeat(idTransaksi);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public static boolean deleteSeat(int idTransaksi){
+        conn.connect();
+        String query = "DELETE FROM `seat` WHERE idTransaksi = ?;" ;
+        try {
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            stmt.setInt(1, idTransaksi);
+            stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

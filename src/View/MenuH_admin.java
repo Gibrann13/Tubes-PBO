@@ -89,12 +89,16 @@ public class MenuH_admin implements ActionListener{
             frameAdmin.dispose();
             new MenuA_updateVoucher();
         } else if (ae.getSource() == lihatPendapatan){
+            frameAdmin.dispose();
             new MenuA_lihatPendapatan();
         } else if (ae.getSource() == lihatJumlahPenumpang){
+            frameAdmin.dispose();
             new MenuA_lihatJumlahPenumpang();
         } else if (ae.getSource() == lihatRiwayatUser){
+            frameAdmin.dispose();
             new MenuA_lihatRiwayatUser();
         } else if (ae.getSource() == updateTiket){
+            frameAdmin.dispose();
             new MenuA_updateTiket();
         }
         

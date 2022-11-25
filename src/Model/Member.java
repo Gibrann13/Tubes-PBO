@@ -60,6 +60,11 @@ public class Member extends User{
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    @Override
+    public String welcomeText() {
+        return "Welcome " + firstName + " to Travel Gajelas";
+    }
     
     
 }

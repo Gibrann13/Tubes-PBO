@@ -80,15 +80,17 @@ public class MenuA_lihatRiwayatUser implements ActionListener {
         tableModel.addColumn("totalBayar");
         tableModel.addColumn("date");
         tableModel.addColumn("caraBayar");
+        tableModel.addColumn("refund");
         
         table.setModel(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
         ArrayList<Transaksi> listUser = new ArrayList<>(ctrl.getAllTransaksi());
-        System.out.println(listUser);
         for (int i = 0; i < listUser.size(); i++) {
             tableModel.addRow(ctrl.buatTabel(listUser.get(i)));
         }
 
+        table.setBounds(0, 0, 500, 400);
+        scrollPane.setBounds(0, 0, 500, 400);
         panelForm1.add(scrollPane);
 
         backKeMenu = new JButton("BACK");
@@ -97,7 +99,6 @@ public class MenuA_lihatRiwayatUser implements ActionListener {
         backKeMenu.addActionListener(this);
 
         panelForm1.add(backKeMenu);
-        panelForm1.add(table);
 
         frameLihatRiwayatUser.add(panelForm1);
     }

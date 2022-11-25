@@ -88,8 +88,8 @@ public class Controller_riwayatTransaksi {
                 t.setIdTransaksi(rs.getInt("idTransaksi"));
                 t.setTotalPembayaran(rs.getDouble("totalPembayaran"));
                 t.setCaraPembayaran(rs.getString("caraPembayaran"));
-                t.setTanggalSewa(rs.getDate("tanggalSewa"));
-                t.setLamaSewa(rs.getInt("lamaSewa"));
+                t.getSewa().setDate(rs.getDate("tanggalSewa"));
+                t.getSewa().setHari(rs.getInt("lamaSewa"));
                 t.getSewa().setHarga(rs.getDouble("harga"));
                 t.getSewa().setIdSewa(rs.getInt("idSewa"));
                 t.getSewa().getMobil().setIdMobil(rs.getInt("idMobil"));

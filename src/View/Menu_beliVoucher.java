@@ -38,7 +38,7 @@ public class Menu_beliVoucher implements ActionListener {
 
     TransaksiVoucher transaksiVoucher = new TransaksiVoucher();
     ControllerA_voucher con = new ControllerA_voucher();
-    
+
     Menu_beliVoucher() {
         frameBeliVoucher = new JFrame("MENU ADMIN BELI VOUCHER");
         frameBeliVoucher.pack();
@@ -228,8 +228,10 @@ public class Menu_beliVoucher implements ActionListener {
                 new Menu_member();
             }
         }
+
         if (ae.getSource() == buttonSubmit) {            
             transaksiVoucher.setIdTransaksi(5);
+
             if (pilihVoucher.getSelectedItem().equals("Voucher 1")) {
                 transaksiVoucher.setIdVoucher(1);
             } else if (pilihVoucher.getSelectedItem().equals("Voucher 2")) {

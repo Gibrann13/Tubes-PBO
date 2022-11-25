@@ -6,7 +6,7 @@
 package Model;
 
 
-public class User {
+public abstract class User {
     private int idUser;
     private String email;
     private String password;
@@ -54,5 +54,6 @@ public class User {
         this.UserType = UserType;
     }
     
+    abstract String welcomeText();
     
 }

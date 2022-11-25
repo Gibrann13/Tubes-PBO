@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Pattern;
 import javax.swing.*;
 import org.jdatepicker.impl.*;
 
@@ -332,7 +333,19 @@ public class Menu_pesanTiket implements ActionListener{
         }
         
         if (ae.getSource() == datePanel) {
-            lokasi.setEnabled(true);
+            long DAY_IN_MS = 1000 * 60 * 60 * 24;
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date currentDate = new Date();
+            Date hariSebelum = (Date) datePicker.getModel().getValue();
+            Date hariSebelum2 = new Date(hariSebelum.getTime() + 1 * DAY_IN_MS);
+//            System.out.println(currentDate);
+//            System.out.println(hariSebelum2);
+//            System.out.println("brpa " + hariSebelum2.compareTo(currentDate));
+            if (hariSebelum2.compareTo(currentDate) < 0) {
+                JOptionPane.showMessageDialog (null, "Maaf, Tanggal yang anda pilih udah lewat!", "PESAN TIKET", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                lokasi.setEnabled(true);
+            }
         }
         
         if (ae.getSource() == lokasi) {
@@ -360,8 +373,13 @@ public class Menu_pesanTiket implements ActionListener{
                 String pattern = "yyyy-MM-dd";
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
                 String date = simpleDateFormat.format((Date) datePicker.getModel().getValue());
-                String idRute = (String) rute.getSelectedItem();
-                tiket = ctrl.getTiket((String) lokasi.getSelectedItem(), date, Integer.parseInt(idRute.substring(0, 1)), idRute.substring(idRute.length() - 3), "");
+                String rutee = (String) rute.getSelectedItem();
+                int temp = rutee.indexOf(" ");//buat ambil brpa char sebelum space
+                Pattern patternReverse = Pattern.compile("\\s");
+                String[] tempReverse = patternReverse.split(rutee);
+                int temp2 = tempReverse[tempReverse.length - 1].length();
+                
+                tiket = ctrl.getTiket((String) lokasi.getSelectedItem(), date, Integer.parseInt(rutee.substring(0, temp)), rutee.substring(rutee.length() - temp2), "");
                 form2();
             }else if (scrollPaneForm2.isVisible()) {
                 scrollPaneForm2.setVisible(false);
@@ -369,8 +387,13 @@ public class Menu_pesanTiket implements ActionListener{
                 String pattern = "yyyy-MM-dd";
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
                 String date = simpleDateFormat.format((Date) datePicker.getModel().getValue());
-                String idRute = (String) rute.getSelectedItem();
-                tiket = ctrl.getTiket((String) lokasi.getSelectedItem(), date, Integer.parseInt(idRute.substring(0, 1)), idRute.substring(idRute.length() - 3), jamDipilih);
+                String rutee = (String) rute.getSelectedItem();
+                int temp = rutee.indexOf(" ");//buat ambil brpa char sebelum space
+                Pattern patternReverse = Pattern.compile("\\s");
+                String[] tempReverse = patternReverse.split(rutee);
+                int temp2 = tempReverse[tempReverse.length - 1].length();
+                
+                tiket = ctrl.getTiket((String) lokasi.getSelectedItem(), date, Integer.parseInt(rutee.substring(0, temp)), rutee.substring(rutee.length() - temp2), jamDipilih);
                 tiketKe = 0;
                 
                 formTransaksi();
