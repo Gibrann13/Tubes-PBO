@@ -13,7 +13,9 @@ import java.util.Date;
  * @author ASUS
  */
 public class TransaksiVoucher extends Transaksi{
-    private ArrayList<Voucher> voucher = new ArrayList<>();
+   private int idVoucher;
+
+    private Voucher voucher = new Voucher();
 
     public TransaksiVoucher() {
     }
@@ -22,11 +24,11 @@ public class TransaksiVoucher extends Transaksi{
         super(idTransaksi, totalPembayaran, date, caraPembayaran, member);
     }
 
-    public ArrayList<Voucher> getVoucher() {
+    public Voucher getVoucher() {
         return voucher;
     }
 
-    public void setVoucher(ArrayList<Voucher> voucher) {
+    public void setVoucher(Voucher voucher) {
         this.voucher = voucher;
     }
     

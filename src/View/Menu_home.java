@@ -212,7 +212,7 @@ public class Menu_home implements ActionListener {
                 member.setPhoneNumber(phonenumber.getText());
 
                 Controller_user ctrl = new Controller_user();
-                if (ctrl.insertNewMember(member)) {
+                if (ctrl.checkEmail(member)) {
                     panelRegister.setVisible(false);
                     buttonLogin.setVisible(false);
                     buttonRegister.setVisible(true);

@@ -104,29 +104,29 @@ public class Controller_riwayatTransaksi {
     }
     
     
-//    public static ArrayList<TransaksiVoucher> getTransaksiVoucher(){
-//        conn.connect();
-//        Member member = Member.getMemberInst();
-//        
-//        String query = "SELECT * FROM transaksi a INNER JOIN transaksi_voucher b ON a.idTransaksi = b.idTransaksi INNER JOIN voucher c ON b.idVoucher = c.idVoucher WHERE idMember = '" + member.getIdUser() + "'";
-//        ArrayList<TransaksiVoucher> transVoucher = new ArrayList<>();
-//        try {
-//            Statement stmt = conn.con.createStatement();
-//            ResultSet rs = stmt.executeQuery(query);
-//            while (rs.next()) {
-//                TransaksiVoucher t = new TransaksiVoucher();
-//                t.setIdTransaksi(rs.getInt("idTransaksi"));
-//                t.setTotalPembayaran(rs.getDouble("totalPembayaran"));
-//                t.setCaraPembayaran(rs.getString("caraPembayaran"));
-//                t.getVoucher()
-//                
-//                transVoucher.add(t);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return transVoucher;
-//    }
+    public static ArrayList<TransaksiVoucher> getTransaksiVoucher(){
+        conn.connect();
+        Member member = Member.getMemberInst();
+        
+        String query = "SELECT * FROM transaksi a INNER JOIN transaksi_voucher b ON a.idTransaksi = b.idTransaksi INNER JOIN voucher c ON b.idVoucher = c.idVoucher WHERE idMember = '" + member.getIdUser() + "'";
+        ArrayList<TransaksiVoucher> transVoucher = new ArrayList<>();
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                TransaksiVoucher t = new TransaksiVoucher();
+                t.setIdTransaksi(rs.getInt("idTransaksi"));
+                t.setTotalPembayaran(rs.getDouble("totalPembayaran"));
+                t.setCaraPembayaran(rs.getString("caraPembayaran"));
+                t.getVoucher().setIdVoucher(rs.getInt("idVoucher"));
+                
+                transVoucher.add(t);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return transVoucher;
+    }
     
     
 }

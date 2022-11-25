@@ -242,81 +242,67 @@ public class Menu_riwayatTransaksi implements ActionListener{
     
     
     public void formRiwayatVoucher(){
-//        panelRiwayatVoucher = new JPanel();
-//        panelRiwayatVoucher.setLayout(null);
-//        panelRiwayatVoucher.setBackground(Color.white);
-//        panelRiwayatVoucher.setBounds(480, 20, 500, 600);
-//        
-//        ArrayList<TransaksiVoucher> transVoucher = ctrl.getTransaksiVoucher();
-//        
-//        JLabel rute[], tanggal[], jam[], banyakTiket[], caraPembayaran[], totalBayar[], title[];
-//        title = new JLabel[transVoucher.size()];
-//        rute = new JLabel[transVoucher.size()];
-//        tanggal = new JLabel[transVoucher.size()];
-//        jam = new JLabel[transVoucher.size()];
-//        banyakTiket = new JLabel[transVoucher.size()];
-//        caraPembayaran = new JLabel[transVoucher.size()];
-//        totalBayar = new JLabel[transVoucher.size()];
-//        
-//        int xbut = 20;
-//        int ybut = 100;
-//        
-//        if (transVoucher.size() < 1) {
-//            JLabel titlee = new JLabel("<html>BELUM ADA<br>TRANSASKSI SEWA</html>");
-//            titlee.setBounds(50, xbut, 400, 100);
-//            titlee.setFont(new Font("Helvetica Neue", Font.BOLD, 30));
-//            xbut += 30;
-//            panelRiwayatSewa.add(titlee);
-//        } else {
-//            for (int i = 0; i < transVoucher.size(); i++) {
-//                int temp = xbut;
-//
-//                title[i] = new JLabel("TRANSAKSI " + (i+1));
-//                title[i].setBounds(ybut, xbut, 300, 50);
-//                title[i].setFont(new Font("Helvetica Neue", Font.BOLD, 30));
-//                xbut += 30;
-//
-//                rute[i] = new JLabel("Jenis Mobil: " + transVoucher.get(i).getSewa().getMobil().getJenisMobil());
-//                rute[i].setBounds(ybut, xbut, 300, 50);
-//                rute[i].setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 18));
-//                xbut += 30;
-//
-//                tanggal[i] = new JLabel("Tanggal sewa: " + transVoucher.get(i).getTanggalSewa());
-//                tanggal[i].setBounds(ybut, xbut, 300, 50);
-//                tanggal[i].setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 18));
-//                xbut += 30;
-//
-//                jam[i] = new JLabel("Lama sewa: " + transVoucher.get(i).getLamaSewa());
-//                jam[i].setBounds(ybut, xbut, 300, 50);
-//                jam[i].setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 18));
-//                xbut += 30;
-//
-//                caraPembayaran[i] = new JLabel("Cara Pembayaran: " + transSewa.get(i).getCaraPembayaran());
-//                caraPembayaran[i].setBounds(ybut, xbut, 300, 50);
-//                caraPembayaran[i].setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 18));
-//                xbut += 30;
-//
-//                totalBayar[i] = new JLabel("Total Bayar: " + transSewa.get(i).getTotalPembayaran());
-//                totalBayar[i].setBounds(ybut, xbut, 300, 50);
-//                totalBayar[i].setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 18));
-//                xbut += 100;
-//            }
-//
-//            for (int i = 0; i < transVoucher.size(); i++) {
-//                panelRiwayatVoucher.add(title[i]);
-//                panelRiwayatVoucher.add(rute[i]);
-//                panelRiwayatVoucher.add(tanggal[i]);
-//                panelRiwayatVoucher.add(jam[i]);
-//                panelRiwayatVoucher.add(banyakTiket[i]);
-//                panelRiwayatVoucher.add(caraPembayaran[i]);
-//                panelRiwayatVoucher.add(totalBayar[i]);
-//            }
-//        }
-//        
-//        scrollPaneForm3 = new JScrollPane(panelRiwayatVoucher, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//        scrollPaneForm3.setBounds(480, 20, 500, 600);
-//        panelRiwayatVoucher.setPreferredSize(new Dimension(0, xbut+100));
-//        frameRiwayatTransaksi.add(scrollPaneForm3);
+        panelRiwayatVoucher = new JPanel();
+        panelRiwayatVoucher.setLayout(null);
+        panelRiwayatVoucher.setBackground(Color.white);
+        panelRiwayatVoucher.setBounds(480, 20, 500, 600);
+        
+        ArrayList<TransaksiVoucher> transVoucher = ctrl.getTransaksiVoucher();
+        
+        JLabel idVoucher[], banyakTiket[], caraPembayaran[], totalBayar[], title[];
+        title = new JLabel[transVoucher.size()];
+        idVoucher = new JLabel[transVoucher.size()];
+        banyakTiket = new JLabel[transVoucher.size()];
+        caraPembayaran = new JLabel[transVoucher.size()];
+        totalBayar = new JLabel[transVoucher.size()];
+        
+        int xbut = 20;
+        int ybut = 100;
+        
+        if (transVoucher.size() < 1) {
+            JLabel titlee = new JLabel("<html>BELUM ADA<br>TRANSASKSI Voucher</html>");
+            titlee.setBounds(50, xbut, 400, 100);
+            titlee.setFont(new Font("Helvetica Neue", Font.BOLD, 30));
+            xbut += 30;
+            panelRiwayatSewa.add(titlee);
+        } else {
+            for (int i = 0; i < transVoucher.size(); i++) {
+                int temp = xbut;
+
+                title[i] = new JLabel("TRANSAKSI " + (i+1));
+                title[i].setBounds(ybut, xbut, 300, 50);
+                title[i].setFont(new Font("Helvetica Neue", Font.BOLD, 30));
+                xbut += 30;
+
+                idVoucher[i] = new JLabel("Id Voucher: " + transVoucher.get(i).getVoucher().getIdVoucher());
+                idVoucher[i].setBounds(ybut, xbut, 300, 50);
+                idVoucher[i].setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 18));
+                xbut += 30;
+
+                caraPembayaran[i] = new JLabel("Cara Pembayaran: " + transVoucher.get(i).getCaraPembayaran());
+                caraPembayaran[i].setBounds(ybut, xbut, 300, 50);
+                caraPembayaran[i].setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 18));
+                xbut += 30;
+
+                totalBayar[i] = new JLabel("Total Bayar: " + transVoucher.get(i).getTotalPembayaran());
+                totalBayar[i].setBounds(ybut, xbut, 300, 50);
+                totalBayar[i].setFont(new Font("Helvetica Neue", Font.ROMAN_BASELINE, 18));
+                xbut += 100;
+            }
+
+            for (int i = 0; i < transVoucher.size(); i++) {
+                panelRiwayatVoucher.add(title[i]);
+                panelRiwayatVoucher.add(idVoucher[i]);
+                panelRiwayatVoucher.add(banyakTiket[i]);
+                panelRiwayatVoucher.add(caraPembayaran[i]);
+                panelRiwayatVoucher.add(totalBayar[i]);
+            }
+        }
+        
+        scrollPaneForm3 = new JScrollPane(panelRiwayatVoucher, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPaneForm3.setBounds(480, 20, 500, 600);
+        panelRiwayatVoucher.setPreferredSize(new Dimension(0, xbut+100));
+        frameRiwayatTransaksi.add(scrollPaneForm3);
     }
     
     @Override
@@ -327,6 +313,11 @@ public class Menu_riwayatTransaksi implements ActionListener{
         }
         
         if (ae.getSource() == butTiket) {
+            if (scrollPaneForm2.isVisible()) {
+                scrollPaneForm2.setVisible(false);
+            }else if(scrollPaneForm3.isVisible()){
+                scrollPaneForm3.setVisible(false);
+            }
             scrollPaneForm2.setVisible(false);
             
             butTiket.setBackground(Color.yellow);
@@ -341,6 +332,8 @@ public class Menu_riwayatTransaksi implements ActionListener{
         if (ae.getSource() == butSewa) {
             if (scrollPaneForm1.isVisible()) {
                 scrollPaneForm1.setVisible(false);
+            }else if(scrollPaneForm3.isVisible()){
+                scrollPaneForm3.setVisible(false);
             }
             butSewa.setBackground(Color.yellow);
             butTiket.setBackground(Color.LIGHT_GRAY);
@@ -351,10 +344,20 @@ public class Menu_riwayatTransaksi implements ActionListener{
             formRiwayatSewa();
         }
         
-//        if (ae.getSource() == butVoucher) {
-//            frameRiwayatTransaksi.dispose();
-//            new Menu_member();
-//        }
+        if (ae.getSource() == butVoucher) {
+            if (scrollPaneForm1.isVisible()) {
+                scrollPaneForm1.setVisible(false);
+            }else if(scrollPaneForm2.isVisible()){
+                scrollPaneForm2.setVisible(false);
+            }
+            butSewa.setBackground(Color.LIGHT_GRAY);
+            butTiket.setBackground(Color.LIGHT_GRAY);
+            butVoucher.setBackground(Color.yellow);
+            butSewa.setEnabled(true);
+            butTiket.setEnabled(true);
+            butVoucher.setEnabled(false);
+            formRiwayatVoucher();
+        }
     }
     
     public static void main(String[] args) {
