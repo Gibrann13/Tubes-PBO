@@ -38,19 +38,18 @@ public class ControllerA_voucher {
         }
     }
 
-    public static boolean insertTransaksiVoucher(TransaksiVoucher transaksiVoucher) {
+    public boolean insertTransaksiVoucher(TransaksiVoucher transaksiVoucher) {
         conn.connect();
         String query = "INSERT INTO transaksi_voucher VALUES(?,?)";
         try {
             PreparedStatement stmt = conn.con.prepareStatement(query);
             stmt.setInt(1, transaksiVoucher.getIdTransaksi());
             stmt.setInt(2, transaksiVoucher.getIdVoucher());
+
             stmt.executeUpdate();
-            conn.disconnect();
             return (true);
         } catch (SQLException e) {
             e.printStackTrace();
-            conn.disconnect();
             return (false);
         }
     }
