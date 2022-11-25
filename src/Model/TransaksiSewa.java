@@ -29,6 +29,14 @@ public class TransaksiSewa extends Transaksi{
     public void setSewa(Sewa sewa) {
         this.sewa = sewa;
     }
+
+    public void setTanggalSewa(java.sql.Date date) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void setLamaSewa(int aInt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 }
